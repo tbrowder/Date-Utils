@@ -1,0 +1,29 @@
+=begin pod
+
+=head1 NAME
+
+B<Date::Utils> - Provides helpful date routines for calendar creation
+
+=head1 SYNOPSIS
+
+=begin code :lang<raku>
+
+use Date::Utils;
+
+=end code
+
+=head1 DESCRIPTION
+
+B<Date::Utils> is ...
+
+=head1 AUTHOR
+
+Tom Browder <tbrowder@acm.org>
+
+=head1 COPYRIGHT AND LICENSE
+
+© 2023 Tom Browder
+
+This library is free software; you may redistribute it or modify it under the Artistic License 2.0.
+
+=end pod

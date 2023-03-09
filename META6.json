@@ -1,0 +1,25 @@
+{
+  "auth": "zef:tbrowder",
+  "authors": [
+    "Tom Browder"
+  ],
+  "build-depends": [
+  ],
+  "depends": [
+  ],
+  "description": "Provides helpful date routines for calendar creation",
+  "license": "Artistic-2.0",
+  "name": "Date::Utils",
+  "perl": "6.d",
+  "provides": {
+    "Date::Utils": "lib/Date/Utils.rakumod"
+  },
+  "resources": [
+  ],
+  "source-url": "",
+  "tags": [
+  ],
+  "test-depends": [
+  ],
+  "version": "0.0.1"
+}
