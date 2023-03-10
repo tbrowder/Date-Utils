@@ -1,3 +1,5 @@
+[![Actions Status](https://github.com/tbrowder/Date-Utils/actions/workflows/linux.yml/badge.svg)](https://github.com/tbrowder/Date-Utils/actions) [![Actions Status](https://github.com/tbrowder/Date-Utils/actions/workflows/macos.yml/badge.svg)](https://github.com/tbrowder/Date-Utils/actions) [![Actions Status](https://github.com/tbrowder/Date-Utils/actions/workflows/windows.yml/badge.svg)](https://github.com/tbrowder/Date-Utils/actions)
+
 NAME
 ====
 
@@ -15,21 +17,13 @@ DESCRIPTION
 
 **Date::Utils** is a collection of routines to help users calculate certain dates in relation to other dates provided by Raku's powerful `Date` class.
 
-Current routines provided:
+Current routine provided:
 
   * `nth-day-of-week-in-month`
 
     sub nth-day-of-week-in-month(
          :$year!, :$month!, :$nth! is copy, 
          :$day-of-week! where {0 < $_ <= 7}, 
-         :$debug
-         --> Date) {...}
-
-To save a little typing effort, the following shorter version is provided:
-
-    multi sub nth-dow-in-month(
-         :$year!, :$month!, :$nth!, 
-         :$dow! where {0 < $_ <= 7}, 
          :$debug
          --> Date) {...}
 
