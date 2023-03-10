@@ -14,7 +14,25 @@ use Date::Utils;
 
 =head1 DESCRIPTION
 
-B<Date::Utils> is ...
+B<Date::Utils> is a collection of routines to help users calculate
+certain dates in relation to other dates provided by Raku's powerful
+C<Date> class.
+
+Current routine provided:
+
+=item C<nth-day-of-week-in-month>
+
+=begin code
+sub nth-day-of-week-in-month(
+     :$year!, :$month!, :$nth! is copy, 
+     :$day-of-week! where {0 < $_ <= 7}, 
+     :$debug
+     --> Date) {...}
+=end code
+
+If C<$nth> is greater than the actual number of C<day-of-week>s in
+the desired month or if that number is negative, the date of its last appearance in
+that month is returned.
 
 =head1 AUTHOR
 
