@@ -10,13 +10,19 @@ $nth   = 1; # first
 
 $d = nth-day-of-week-in-month :$year, :$month, :$nth, :day-of-week($dow);
 is $d, Date.new: $year, $month, 6;
+$d = nth-dow-in-month :$year, :$month, :$nth, :$dow;
+is $d, Date.new: $year, $month, 6;
 
 $nth   = 3; # third
 $d = nth-day-of-week-in-month :$year, :$month, :$nth, :day-of-week($dow);
 is $d, Date.new: $year, $month, 20;
+$d = nth-dow-in-month :$year, :$month, :$nth, :$dow;
+is $d, Date.new: $year, $month, 20;
 
 $nth   = -3; # last
 $d = nth-day-of-week-in-month :$year, :$month, :$nth, :day-of-week($dow);
+is $d, Date.new: $year, $month, 27;
+$d = nth-dow-in-month :$year, :$month, :$nth, :$dow;
 is $d, Date.new: $year, $month, 27;
 
 done-testing;
