@@ -20,7 +20,8 @@ C<Date> class.
 
 Current routines provided:
 
-=item C<nth-day-of-week-in-month>
+=begin item
+C<nth-day-of-week-in-month>
 
 =begin code
 sub nth-day-of-week-in-month(
@@ -44,8 +45,10 @@ sub nth-dow-in-month(
      :$debug
      --> Date) {...}
 =end code
+=end item
 
-=item C<nth-day-of-week-after-date>
+=begin item 
+C<nth-day-of-week-after-date>
 
 =begin code
 sub nth-day-of-week-after-date(
@@ -65,6 +68,7 @@ sub nth-dow-after-date(
      :$debug
      --> Date) {...}
 =end code
+=end item
 
 =head1 AUTHOR
 
