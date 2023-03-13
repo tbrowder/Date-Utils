@@ -52,7 +52,7 @@ sub nth-dow-after-date(
     Date :$date!, :$nth! is copy, 
     :$dow! where {0 < $_ <= 7}, 
     :$debug
-    --> Date) {
+    --> Date) is export {
 
     nth-day-of-week-after-date :$date, :$nth, 
     :day-of-week($dow), :$debug
@@ -62,7 +62,7 @@ sub nth-day-of-week-after-date(
     Date :$date!, :$nth! is copy, 
     :$day-of-week! where {0 < $_ <= 7}, 
     :$debug
-    --> Date) {
+    --> Date) is export {
 
     if $nth < 1 {
         $nth = 10;
@@ -72,6 +72,9 @@ sub nth-day-of-week-after-date(
     my Date $d = $date;
     my $dow = $d.day-of-week;
     # find first instance after the start date
+    # BUT do not count the start date
+    $d += 1;
+    $dow = $d.day-of-week;
     while $dow != $day-of-week {
         $d += 1;
         $dow = $d.day-of-week;

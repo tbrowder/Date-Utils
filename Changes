@@ -1,6 +1,7 @@
 Revision history for Date-Utils
 
 {{$NEXT}}
+    - Add tags
     - Add three routines
     - Improve tests and documentation
 
