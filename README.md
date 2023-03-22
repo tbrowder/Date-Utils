@@ -19,6 +19,20 @@ DESCRIPTION
 
 Current routines provided:
 
+  * `weeks-in-month`
+
+    The routine returns the number of full and partial weeks in a month.
+
+        multi sub weeks-in-month(
+             :$year!, :$month!, 
+             :$debug
+             --> UInt) {...}
+
+        multi sub weeks-in-month(
+             Date $date,
+             :$debug
+             --> UInt) {...}
+
   * `nth-day-of-week-in-month`
 
         sub nth-day-of-week-in-month(

@@ -21,6 +21,26 @@ C<Date> class.
 Current routines provided:
 
 =begin item
+C<weeks-in-month>
+
+The routine returns the number of full and
+partial weeks in a month.
+
+=begin code
+multi sub weeks-in-month(
+     :$year!, :$month!, 
+     :$debug
+     --> UInt) {...}
+
+multi sub weeks-in-month(
+     Date $date,
+     :$debug
+     --> UInt) {...}
+
+=end code
+=end item
+
+=begin item
 C<nth-day-of-week-in-month>
 
 =begin code
