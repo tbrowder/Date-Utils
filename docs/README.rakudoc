@@ -187,7 +187,31 @@ That equation is valid for all days, but it only defines a calendar
 week that begins with Monday. How do we transform that result to
 handle a calendar week that begins with another day?
 
+Looking at the equation above, we will assume the constants one are the desired
+dow for the calendar. So, we try changing those to seven to get days in the week:
 
+=begin code
+7 - 1 + 7 = 13 # days in first week, expected 1!
+7 - 2 + 7 = 12 # days in first week, expected 2!
+=end code.
+
+Well, that didn't work. To a well-trained mathematician the solution is
+probably obvious, but this author has forgotten most of that. So, let's
+try something else.
+
+First try to rewrite the original equation to be more general but yield
+the same results.
+
+=begin code
+7 + 1 - 1 = 7 # days in first week, version 1
+7 + 1 - 2 = 6 # also version 1
+
+
+=end code.
+
+
+
+# check wording below after above is satisfactory
 Given that value, subtract it from C<$dim> to get C<> and the number of days left in the month. The remaining days divided by seven yield the remaining weeks so
 we have our desired number.
 
