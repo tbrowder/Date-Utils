@@ -28,11 +28,13 @@ Current routines provided:
 
         multi sub weeks-in-month(
             :$year!, :$month!,
+            :$cal-first-dow = 7, # Sunday
             :$debug
             --> UInt) {...}
 
         multi sub weeks-in-month(
             Date $date,
+            :$cal-first-dow = 7, # Sunday
             :$debug
             --> UInt) {...}
 
@@ -77,8 +79,6 @@ Notes
 
 This version adds a more general routine to calculate the *weeks-in-month* for any starting day of the week (dow) given its number (Monday through Sunday) as a Raku Date dow in the range 1..7.
 
-We note the days in a month must be one of 28, 29, 30, or 31. Consequently, the minimum number of weeks in a month is four and the maximum is six (when the first week has from one to less than some value depending on the total days in the month).
-
 Given a calendar week starting on Monday, the Raku Date dow values for a month are shown below along with the corresponding calendar values for a 31-day month starting on a Friday. Note there are five calendar weeks consisting of one partial week followed by four full weeks.
 
     Code             Days
@@ -110,53 +110,37 @@ We choose our calendar week start day of the week from the last example: `my $Fc
 
 We observe that the maximum days in a month can consist of 28, 29, 30, or 31. If we take the first day of the month and compare it to our desired calendar week start day, we can derive the Date days in the first calendar week. Note lists of Date days stay in the proper order, so we must get one of the following sequences in a first week of one to seven days. Note each sequence is defined by its first day number, but it does **not** have to have its full set of days (as occurs in a partial first week).
 
-We construct a constant data object that enables us to address the Date dow for any combination of calendar week start day and position (1..7) in that week.
-
-We define a hash of hashes keyed by the Date dow desired to begin a calendar week. The values are hashes of that first week keyed with Date dow numbers for that week whose value are their postions in the seven-day array for that week.
-
-for that entire week.
+We now construct a constant data object that enables us to address the Date dow for any combination of calendar week start day and position (1..7) in that week. We define a hash of hashes keyed by the Date dow desired to begin a calendar week. The values are hashes of that first week keyed with Date dow numbers for that week whose value are their postions in the seven-day array for that entire week.
 
     my %calweeks = [
-    1 => {
-        # keys are Date dow's for this week
-        # values are the number of days remaining in the week
-        1 => 7, 2 => 6, 3 => 5, 4 => 4, 5 => 3, 6 => 2, 7 => 1,
-    },
-
-    2 =>
-        # keys are Date dow's for this week
-        2 => 7, 3 => 6, 4 => 5, 5 => 4, 6 => 3, 7 => 2, 1 => 1,
-    },
-
-    3 =>
-        # keys are Date dow's for this week
-        3 => 7, 4 => 6, 5 => 5, 6 => 4, 7 => 3, 1 => 2, 2 => 1,
-    },
-
-    4 =>
-        # keys are Date dow's for this week
-        4 => 7, 5 => 6, 6 => 5, 7 => 4, 1 => 3, 2 => 2, 3 => 1,
-    },
-
-    5 =>
-        # keys are Date dow's for this week
-        5 => 7, 6 => 6, 7 => 5, 1 => 4, 2 => 3, 3 => 2, 4 => 1,
-    },
-
-    6 =>
-        # keys are Date dow's for this week
-        6 => 7, 7 => 6, 1 => 5, 2 => 4, 3 => 3, 4 => 2, 5 => 1,
-    },
-
-    7 =>
-        # keys are Date dow's for this week
-        7 => 7, 1 => 6, 2 => 5, 3 => 4, 4 => 3, 5 => 2, 6 => 1,
-    },
+        1 => {
+            # keys are Date dow's for this week
+            # values are the number of days remaining in the week
+            1 => 7, 2 => 6, 3 => 5, 4 => 4, 5 => 3, 6 => 2, 7 => 1,
+        },
+        2 => {
+            2 => 7, 3 => 6, 4 => 5, 5 => 4, 6 => 3, 7 => 2, 1 => 1,
+        },
+        3 => {
+            3 => 7, 4 => 6, 5 => 5, 6 => 4, 7 => 3, 1 => 2, 2 => 1,
+        },
+        4 => {
+            4 => 7, 5 => 6, 6 => 5, 7 => 4, 1 => 3, 2 => 2, 3 => 1,
+        },
+        5 => {
+            5 => 7, 6 => 6, 7 => 5, 1 => 4, 2 => 3, 3 => 2, 4 => 1,
+        },
+        6 => {
+            6 => 7, 7 => 6, 1 => 5, 2 => 4, 3 => 3, 4 => 2, 5 => 1,
+        },
+        7 => {
+            7 => 7, 1 => 6, 2 => 5, 3 => 4, 4 => 3, 5 => 2, 6 => 1,
+        },
     ];
 
-For example, given a calendar week that starts on Sunday (Date dow 7) and the first day of the month is a Date dow of 2 (Tuesday), we can find the existing position (`$Fc=7` and `$dow=2`). Using the hash we get the value of `%calweeks{$Fc}[$dow]=5` which are the days remaining in that week.
+For example, given a calendar week that starts on Sunday (Date dow 7) and the first day of the month is a Date dow of 2 (Tuesday), we can find the existing position (`$Fc=7` and `$dow=2`). Using the hash we get the value of `%calweeks{$Fc}{$dow}=5` which are the days remaining in that week.
 
-Given that value, subtract it from `$dim` to get `` and the number of days left in the month. The remaining days divided by seven (rounded up) yield the remaining weeks so we have our desired number.
+Given that value, subtract it from `$dim` to get the number of days left in the month. Those remaining days divided by seven (rounded up) yield the remaining weeks so we have our desired number.
 
 AUTHOR
 ======
