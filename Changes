@@ -2,10 +2,10 @@ Revision history for Date-Utils
 
 {{$NEXT}}
     - Make routine 'weeks-in-month' more general
-      so a calendar week can start on any of the
-      seven days.
+      so a calendar week can start on any of a
+      week's seven days
     - Improve documentation
-    - Add tests
+    - Add tests for the new routine's capability
 
 0.0.3  2023-03-22T20:03:59-05:00
     - Add another routine
