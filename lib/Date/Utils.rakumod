@@ -1,5 +1,8 @@
 unit module Date::Utils;
 
+my %calweeks;
+
+=begin comment
 my sub days-in-week1(
     Date $date,
     :$cal-first-dow = 7, # Sunday
@@ -9,12 +12,13 @@ my sub days-in-week1(
     my $Fd    = $F.day-of-week; # 1..7 (Mon..Sun)
     my $Fc    = $cal-first-dow;
     my $ndays = $date.days-in-month;
-    
+
 }
+=end comment
 
 multi sub weeks-in-month(
-    :$year!, :$month!, 
-    :cal-first-dow = 7, # Sunday
+    :$year!, :$month!,
+    :$cal-first-dow = 7, # Sunday
     :$debug
     --> UInt) is export {
     my $date = Date.new: :$year, :$month;
@@ -33,39 +37,11 @@ multi sub weeks-in-month(
     }
 
     # get days in first week
-    # transform this:
-    # 7 1 2 3 4 5 6 => $dow 
-    # to this
-    # 1 2 3 4 5 6 7
-    # 7 - 6 = 1
-    # 1 + 1 = 2
-    # 2
-    # 3
-    # 4
-    # 5
-    # 6 + 1 = 7
-
     my $F   = $date.first-date-in-month;
     my $dim = $date.days-in-month;
     my $Fd  = $F.day-of-week; # 1..7 (Mon..Sun)
 
-    my ($dw1, $dw2, $days-in-week1);
-    with $Fd { # 1..7 (Mo..Su)
-        when $Fc == $Fd     { $dw1 = 7 }
-          # Fc - Fd = 0 => 7
-          # 7  - Fd = 0 => 1
-        when $Fc == $Fd + 1 { $dw1 = 6 }
-          # Fc - Fd = 0 => 7
-        when $Fc == $Fd + 2 { $dw1 = 5 }
-        when $Fc == $Fd + 3 { $dw1 = 4 }
-        when $Fc == $Fd + 4 { $dw1 = 3 }
-        when $Fc == $Fd + 5 { $dw1 = 2 }
-        when $Fc == $Fd + 6 { $dw1 = 1 }
-    }
-    # summarized as
-    #   days = ($Fc - $Fd) + 1
-    days-in-week1 = $dw1;
-
+    my $days-in-week1 = %calweeks{$Fc}{$Fd};
     my $days-remain    = $dim - $days-in-week1;
     my $weeks-in-month = 1; # the first full or partial week
 
@@ -95,30 +71,30 @@ multi sub weeks-in-month(
     # divide days-in-month by 7:
     #   first day is on a Monday
     #   31: 4 weeks plus 3 days (5 weeks max)
-    #   30: 4 weeks plus 2 days (5 weeks max) 
-    #   29: 4 weeks plus 1 day  (5 weeks max) 
-    #   28: 4 weeks exactly     (4 weeks max) 
+    #   30: 4 weeks plus 2 days (5 weeks max)
+    #   29: 4 weeks plus 1 day  (5 weeks max)
+    #   28: 4 weeks exactly     (4 weeks max)
 
     #   first day is on a Sunday
     #   31: 1 day plus 4 weeks plus 2 days (6 weeks max)
-    #   30: 1 day plus 4 weeks plus 1 day  (6 weeks max) 
-    #   29: 1 day plus 4 weeks exactly     (5 weeks max) 
-    #   28: 1 day plus 3 weeks plus 6 days (5 weeks max) 
+    #   30: 1 day plus 4 weeks plus 1 day  (6 weeks max)
+    #   29: 1 day plus 4 weeks exactly     (5 weeks max)
+    #   28: 1 day plus 3 weeks plus 6 days (5 weeks max)
 }
 
 sub nth-dow-in-month(
-    :$year!, :$month!, :$nth! is copy, 
-    :$dow! where {0 < $_ <= 7}, 
+    :$year!, :$month!, :$nth! is copy,
+    :$dow! where {0 < $_ <= 7},
     :$debug
     --> Date) is export {
 
-    nth-day-of-week-in-month :$year, :$month, :$nth, 
+    nth-day-of-week-in-month :$year, :$month, :$nth,
     :day-of-week($dow), :$debug
 }
 
 sub nth-day-of-week-in-month(
-    :$year!, :$month!, :$nth! is copy, 
-    :$day-of-week! where {0 < $_ <= 7}, 
+    :$year!, :$month!, :$nth! is copy,
+    :$day-of-week! where {0 < $_ <= 7},
     :$debug
     --> Date) is export {
 
@@ -155,18 +131,18 @@ sub nth-day-of-week-in-month(
 }
 
 sub nth-dow-after-date(
-    Date :$date!, :$nth! is copy, 
-    :$dow! where {0 < $_ <= 7}, 
+    Date :$date!, :$nth! is copy,
+    :$dow! where {0 < $_ <= 7},
     :$debug
     --> Date) is export {
 
-    nth-day-of-week-after-date :$date, :$nth, 
+    nth-day-of-week-after-date :$date, :$nth,
     :day-of-week($dow), :$debug
 }
 
 sub nth-day-of-week-after-date(
-    Date :$date!, :$nth! is copy, 
-    :$day-of-week! where {0 < $_ <= 7}, 
+    Date :$date!, :$nth! is copy,
+    :$day-of-week! where {0 < $_ <= 7},
     :$debug
     --> Date) is export {
 
@@ -197,3 +173,41 @@ sub nth-day-of-week-after-date(
     }
     $dd
 }
+
+%calweeks = [
+    1 => {
+        # keys are Date dow's for this week
+        # values are the number of days remaining in the week
+        1 => 7, 2 => 6, 3 => 5, 4 => 4, 5 => 3, 6 => 2, 7 => 1,
+    },
+
+    2 => {
+        # keys are Date dow's for this week
+        2 => 7, 3 => 6, 4 => 5, 5 => 4, 6 => 3, 7 => 2, 1 => 1,
+    },
+
+    3 => {
+        # keys are Date dow's for this week
+        3 => 7, 4 => 6, 5 => 5, 6 => 4, 7 => 3, 1 => 2, 2 => 1,
+    },
+
+    4 => {
+        # keys are Date dow's for this week
+        4 => 7, 5 => 6, 6 => 5, 7 => 4, 1 => 3, 2 => 2, 3 => 1,
+    },
+
+    5 => {
+        # keys are Date dow's for this week
+        5 => 7, 6 => 6, 7 => 5, 1 => 4, 2 => 3, 3 => 2, 4 => 1,
+    },
+
+    6 => {
+        # keys are Date dow's for this week
+        6 => 7, 7 => 6, 1 => 5, 2 => 4, 3 => 3, 4 => 2, 5 => 1,
+    },
+
+    7 => {
+        # keys are Date dow's for this week
+        7 => 7, 1 => 6, 2 => 5, 3 => 4, 4 => 3, 5 => 2, 6 => 1,
+    },
+];

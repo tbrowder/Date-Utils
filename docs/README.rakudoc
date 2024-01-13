@@ -7,9 +7,8 @@ B<Date::Utils> - Provides helpful date routines for calendar creation
 =head1 SYNOPSIS
 
 =begin code :lang<raku>
-
 use Date::Utils;
-
+...# use the routines to create a calendar
 =end code
 
 =head1 DESCRIPTION
@@ -23,17 +22,17 @@ Current routines provided:
 =begin item
 C<weeks-in-month>
 
-These multi-subs return the total number of full and
-partial weeks in a month where the day-of-week order
-begins with Sunday and ends on Saturday as normally
-used in US calendars.
+These two multi-subs return the total number of full and partial
+seven-day weeks in a calendar month where the day-of-week order begins
+with any desired day and ends the week six days later. The default is
+to start calendar weeks on Sunday and end on Saturday as normally used
+in US calendars.
 
-See the discussion of the algorithm for this calculation
-in B<Notes> below.
+See the discussion of the methodology used in B<Notes> below.
 
 =begin code
 multi sub weeks-in-month(
-    :$year!, :$month!, 
+    :$year!, :$month!,
     :$debug
     --> UInt) {...}
 
@@ -49,46 +48,46 @@ C<nth-day-of-week-in-month>
 
 =begin code
 sub nth-day-of-week-in-month(
-    :$year!, :$month!, :$nth! is copy, 
-    :$day-of-week! where {0 < $_ <= 7}, 
+    :$year!, :$month!, :$nth! is copy,
+    :$day-of-week! where {0 < $_ <= 7},
     :$debug
     --> Date) {...}
 =end code
 
-If C<$nth> is greater than the actual number of C<day-of-week>s in
-the desired month or if that number is zero or negative, the date 
-of its last appearance in that month is returned.
+If C<$nth> is greater than the actual number of C<day-of-week>s in the
+desired month or if that number is zero or negative, the date of its
+last appearance in that month is returned.
 
-As a convenience, a version of the same routine 
-requiring fewer key strokes is provided:
+As a convenience, a version of the same routine requiring fewer key
+strokes is provided:
 
 =begin code
 sub nth-dow-in-month(
-    :$year!, :$month!, :$nth! is copy, 
-    :$dow! where {0 < $_ <= 7}, 
+    :$year!, :$month!, :$nth! is copy,
+    :$dow! where {0 < $_ <= 7},
     :$debug
     --> Date) {...}
 =end code
 =end item
 
-=begin item 
+=begin item
 C<nth-day-of-week-after-date>
 
 =begin code
 sub nth-day-of-week-after-date(
-    Date :$date!, :$nth! is copy, 
-    :$day-of-week! where {0 < $_ <= 7}, 
+    Date :$date!, :$nth! is copy,
+    :$day-of-week! where {0 < $_ <= 7},
     :$debug
     --> Date) {...}
 =end code
 
-As a convenience, a version of the same routine 
-requiring fewer key strokes is provided:
+As a convenience, a version of the same routine requiring fewer key
+strokes is provided:
 
 =begin code
 sub nth-dow-after-date(
-    Date :$date!, :$nth! is copy, 
-    :$dow! where {0 < $_ <= 7}, 
+    Date :$date!, :$nth! is copy,
+    :$dow! where {0 < $_ <= 7},
     :$debug
     --> Date) {...}
 =end code
@@ -96,24 +95,19 @@ sub nth-dow-after-date(
 
 =Notes
 
-The calcuration of calendar weeks in a month has been
-a challenge and it may not be the most efficient, but
-it works. This update adds a more general routine to
-calculate the I<weeks-in-month> for any starting day of
-the week (dow) given its number (Monday through Sunday
-are, in Raku, given the range 1..7).
+This version adds a more general routine to calculate the
+I<weeks-in-month> for any starting day of the week (dow) given its
+number (Monday through Sunday) as a Raku Date dow in the range 1..7.
 
 We note the days in a month must be one of 28, 29, 30, or 31.
-Consequently, the minimum number of weeks in a month is four
-and the maximum is six (when the first week has from
-one to less than
-some value depending on the total days in the month).
+Consequently, the minimum number of weeks in a month is four and the
+maximum is six (when the first week has from one to less than some
+value depending on the total days in the month).
 
-Given a calendar week starting on Monday, the Raku values for a
-month are shown below along with the corresponding
-calendar values for a 31-day month starting on a Friday.
-Note there are five calendar weeks consisting of one 
-partial week followed by four full weeks.
+Given a calendar week starting on Monday, the Raku Date dow values for
+a month are shown below along with the corresponding calendar values
+for a 31-day month starting on a Friday.  Note there are five calendar
+weeks consisting of one partial week followed by four full weeks.
 
 =begin code
 Code             Days
@@ -125,21 +119,19 @@ M T W T F S S    Mo Tu We Th Fr Sa Su
 1 2 3 4 5 6 7    25 26 27 28 29 30 31
 =end code
 
-If the calendar week starts on a Sunday, the Raku code
-and the calendar days for the same month change to the
-form shown below.
-Note there are still five calendar weeks but
-now consisting of one partial week followed
-by four full weeks followed by one partial week.
+If the calendar week starts on a Sunday, the Date dow numbers and the
+calendar days for the same month change to the form shown below.  Note
+there are still five calendar weeks, but now consisting of one partial
+week followed by four full weeks followed by one partial week.
 
 =begin code
 Code             Days
 S M T W T F S    Su Mo Tu We Th Fr Sa
-          5 6                    1  2 
+          5 6                    1  2
 7 1 2 3 4 5 6     3  4  5  6  7  8  9
 7 1 2 3 4 5 6    10 11 12 13 14 15 16
 7 1 2 3 4 5 6    17 18 19 20 21 22 23
-7 1 2 3 4 5 6    24 25 26 27 28 29 30 
+7 1 2 3 4 5 6    24 25 26 27 28 29 30
 7                31
 =end code
 
@@ -152,69 +144,75 @@ C<Dateish> routines provide us with two known values of the month:
 We choose our calendar week start day of the week from the
 last example: C<my $Fc = 5; # Friday>.
 
-We observe that the maximum days in a month can consist of 28, 29, 30, or 31.
-If we take the first day of the month and compare it to our desired calendar week
-start day, we can derive the Raku days in the first calendar week. Note
-lists of Raku days stay in the proper order, so we must get one of the
-following sequences in a first week of one to seven days. Note each sequence
-is defined by its first day number, but it does B<not> have to have its 
-full set of days (as occurs in a partial first week).
+We observe that the maximum days in a month can consist of 28, 29, 30,
+or 31.  If we take the first day of the month and compare it to our
+desired calendar week start day, we can derive the Date days in the
+first calendar week. Note lists of Date days stay in the proper order,
+so we must get one of the following sequences in a first week of one
+to seven days. Note each sequence is defined by its first day number,
+but it does B<not> have to have its full set of days (as occurs in a
+partial first week).
+
+We construct a constant data object that enables us to address the
+Date dow for any combination of calendar week start day and position
+(1..7) in that week.
+
+We define a hash of hashes keyed by the Date dow desired to begin a
+calendar week. The values are hashes of that first week keyed with
+Date dow numbers for that week whose value are their postions in the
+seven-day array for that week.
+
+for that entire week.
 
 =begin code
-1234567 # unique subsequences: 1, 12, 12..6
-2345671 # unique subsequences: 2, 23, 23..7
-3456712 # unique subsequences: 3, 34, 34..1
-4567123 # unique subsequences: 4, 45, 45..2
-5671234 # unique subsequences: 5, 56, 56..3
-6712345 # unique subsequences: 6, 67, 67..4
-7123456 # unique subsequences: 7, 78, 71..5
+my %calweeks = [
+1 => {
+    # keys are Date dow's for this week
+    # values are the number of days remaining in the week
+    1 => 7, 2 => 6, 3 => 5, 4 => 4, 5 => 3, 6 => 2, 7 => 1,
+},
+
+2 =>
+    # keys are Date dow's for this week
+    2 => 7, 3 => 6, 4 => 5, 5 => 4, 6 => 3, 7 => 2, 1 => 1,
+},
+
+3 =>
+    # keys are Date dow's for this week
+    3 => 7, 4 => 6, 5 => 5, 6 => 4, 7 => 3, 1 => 2, 2 => 1,
+},
+
+4 =>
+    # keys are Date dow's for this week
+    4 => 7, 5 => 6, 6 => 5, 7 => 4, 1 => 3, 2 => 2, 3 => 1,
+},
+
+5 =>
+    # keys are Date dow's for this week
+    5 => 7, 6 => 6, 7 => 5, 1 => 4, 2 => 3, 3 => 2, 4 => 1,
+},
+
+6 =>
+    # keys are Date dow's for this week
+    6 => 7, 7 => 6, 1 => 5, 2 => 4, 3 => 3, 4 => 2, 5 => 1,
+},
+
+7 =>
+    # keys are Date dow's for this week
+    7 => 7, 1 => 6, 2 => 5, 3 => 4, 4 => 3, 5 => 2, 6 => 1,
+},
+];
 =end code
 
-For example, given a first day of the month is a Raku day of 2 (Tuesday), 
-then there are 6 days in that first week: 7 - 2 + 1.
+For example, given a calendar week that starts on Sunday (Date dow 7)
+and the first day of the month is a Date dow of 2 (Tuesday), we can
+find the existing position (C<$Fc=7> and C<$dow=2>).  Using the hash
+we get the value of C<%calweeks{$Fc}[$dow]=5> which are the days
+remaining in that week.
 
-=begin code
-7 - 1 + 1 = 7 # days in first week
-7 - 2 + 1 = 6
-7 - 3 + 1 = 5
-7 - 4 + 1 = 4
-7 - 5 + 1 = 3
-7 - 6 + 1 = 2
-7 - 7 + 1 = 1
-=end code.
-
-That equation is valid for all days, but it only defines a calendar
-week that begins with Monday. How do we transform that result to
-handle a calendar week that begins with another day?
-
-Looking at the equation above, we will assume the constants one are the desired
-dow for the calendar. So, we try changing those to seven to get days in the week:
-
-=begin code
-7 - 1 + 7 = 13 # days in first week, expected 1!
-7 - 2 + 7 = 12 # days in first week, expected 2!
-=end code.
-
-Well, that didn't work. To a well-trained mathematician the solution is
-probably obvious, but this author has forgotten most of that. So, let's
-try something else.
-
-First try to rewrite the original equation to be more general but yield
-the same results.
-
-=begin code
-7 + 1 - 1 = 7 # days in first week, version 1
-7 + 1 - 2 = 6 # also version 1
-
-
-=end code.
-
-
-
-# check wording below after above is satisfactory
-Given that value, subtract it from C<$dim> to get C<> and the number of days left in the month. The remaining days divided by seven yield the remaining weeks so
-we have our desired number.
-
+Given that value, subtract it from C<$dim> to get C<> and the number
+of days left in the month. The remaining days divided by seven
+(rounded up) yield the remaining weeks so we have our desired number.
 
 =head1 AUTHOR
 
