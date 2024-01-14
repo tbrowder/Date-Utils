@@ -50,7 +50,7 @@ C<nth-day-of-week-in-month>
 =begin code
 sub nth-day-of-week-in-month(
     :$year!, :$month!, :$nth! is copy,
-    DoW :$day-of-week!},
+    DoW :$day-of-week!,
     :$debug
     --> Date) {...}
 =end code

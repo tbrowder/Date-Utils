@@ -41,7 +41,7 @@ Current routines provided:
 
         sub nth-day-of-week-in-month(
             :$year!, :$month!, :$nth! is copy,
-            DoW :$day-of-week!},
+            DoW :$day-of-week!,
             :$debug
             --> Date) {...}
 
