@@ -76,7 +76,7 @@ Notes
 
 
 
-This version adds a more general routine to calculate the *weeks-in-month* for any starting day of the week (dow) given its number (Monday through Sunday) as a Raku Date dow in the range 1..7. The routine is important for laying out a calendar because it determines the vertical space required for the presentation.
+This version adds a more general routine to calculate the *weeks-in-month* for any starting day of the week (dow) given its number (Monday through Sunday) as a Raku Date dow in the range 1..7 (the default dow order for a Raku Date).. The routine is important for laying out a calendar because it determines the vertical space required for the presentation.
 
 Given a calendar week starting on Monday, the Raku Date dow values for a month are shown below along with the corresponding calendar values for a 31-day month starting on a Friday. Note there are five calendar weeks consisting of one partial week followed by four full weeks.
 
@@ -116,11 +116,12 @@ Lists of Date days stay in the proper order, so we must get one of the following
 We now construct a constant data object that enables us to address the Date dow for any combination of calendar week start day and position (1..7) in that week. We define a hash of hashes keyed by the Date dow desired to begin a calendar week. For each of those keys, the values are hashes of that week's seven Date dow numbers. Each key's value is the number of days remaining in the week for that dow. The comments in the following code should make that a bit clearer.
 
     my %calweeks = [
-        # Keys are the dow of the starting day for a calendar week in Raku Date dow
-        # default order. The keys' values are another hash.
+        # Keys are the dow of the starting day for a calendar week in 
+        # Raku Date dow default order. The keys' values are another hash.
         1 => {
             # Keys of the second-level hash are Date dow's for this week. 
-            # Values are the number of days remaining in the week for each dow.
+            # Values are the number of days remaining in the week for 
+            # each dow.
             1 => 7, 2 => 6, 3 => 5, 4 => 4, 5 => 3, 6 => 2, 7 => 1,
         },
         2 => {

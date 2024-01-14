@@ -98,7 +98,8 @@ sub nth-dow-after-date(
 
 This version adds a more general routine to calculate the
 I<weeks-in-month> for any starting day of the week (dow) given its
-number (Monday through Sunday) as a Raku Date dow in the range 1..7.
+number (Monday through Sunday) as a Raku Date dow in the range 1..7
+(the default dow order for a Raku Date)..
 The routine is important for laying out a calendar because it
 determines the vertical space required for the presentation.
 
@@ -169,11 +170,12 @@ in the following code should make that a bit clearer.
 
 =begin code
 my %calweeks = [
-    # Keys are the dow of the starting day for a calendar week in Raku Date dow
-    # default order. The keys' values are another hash.
+    # Keys are the dow of the starting day for a calendar week in 
+    # Raku Date dow default order. The keys' values are another hash.
     1 => {
         # Keys of the second-level hash are Date dow's for this week. 
-        # Values are the number of days remaining in the week for each dow.
+        # Values are the number of days remaining in the week for 
+        # each dow.
         1 => 7, 2 => 6, 3 => 5, 4 => 4, 5 => 3, 6 => 2, 7 => 1,
     },
     2 => {
