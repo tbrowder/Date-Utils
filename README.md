@@ -22,9 +22,7 @@ Current routines provided:
 
   * `weeks-in-month`
 
-    These two multi-subs return the total number of full and partial seven-day weeks in a calendar month where the day-of-week (dow) order begins with any desired day and ends the week six days later. The default is to start calendar weeks on Sunday and end on Saturday as normally used in US calendars.
-
-    See the discussion of the methodology used in **Notes** below.
+    These two multi-subs return the total number of full and partial seven-day weeks in a calendar month where the day-of-week (dow) order begins with any desired day and ends the week six days later. The default is to start calendar weeks on Sunday and end on Saturday as normally used in US calendars. See the discussion of the methodology used in **Notes** below.
 
         multi sub weeks-in-month(
             :$year!, :$month!,
