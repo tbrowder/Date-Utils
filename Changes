@@ -1,6 +1,8 @@
 Revision history for Date-Utils
 
 {{$NEXT}}
+
+0.5.0  2024-01-13T18:26:45-06:00
     - Make routine 'weeks-in-month' more general
       so a calendar week can start on any of a
       week's seven days
