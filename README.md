@@ -107,7 +107,7 @@ So, how can we turn those observations into an algorithm? Raku's `Dateish` routi
 
 We choose our example calendar week start day of the week from the last example: `my $Fc = 5` (a Friday).
 
-We observe that the maximum days in a month can consist of 28, 29, 30, or 31. If we take the first day of the month and compare it to our desired calendar week start day, we can derive the Date days in the first calendar week. Note lists of Date days stay in the proper order, so we must get one of the following sequences in a first week of one to seven days. Note alsobeach sequence is defined by its first day number, but it does **not** have to have its full set of days (as occurs in a partial first week).
+We observe that the maximum days in a month can consist of 28, 29, 30, or 31. If we take the first day of the month and compare it to our desired calendar week start day, we can derive the Date days in the first calendar week. Note lists of Date days stay in the proper order, so we must get one of the following sequences in a first week of one to seven days. Note also each sequence is defined by its first day number, but it does **not** have to have its full set of days (as occurs in a partial first week).
 
 We now construct a constant data object that enables us to address the Date dow for any combination of calendar week start day and position (1..7) in that week. We define a hash of hashes keyed by the Date dow desired to begin a calendar week. The values are hashes of that week keyed with Date dow numbers for that week. Each key's value is the number of days remaining in the week for that dow.
 
