@@ -23,7 +23,7 @@ Current routines provided:
 C<weeks-in-month>
 
 These two multi-subs return the total number of full and partial
-seven-day weeks in a calendar month where the day-of-week order begins
+seven-day weeks in a calendar month where the day-of-week (dow) order begins
 with any desired day and ends the week six days later. The default is
 to start calendar weeks on Sunday and end on Saturday as normally used
 in US calendars.
@@ -138,14 +138,14 @@ S M T W T F S    Su Mo Tu We Th Fr Sa
 So, how can we turn those observations into an algorithm? Raku's
 C<Dateish> routines provide us with two known values of the month:
 
-=item C<my $Fd  = $date.first-day-of-month; # 1..7>
-=item C<my $dim = $date.date.days-in-month; # 28, 29, 30, 31>
-
 We choose our calendar week start day of the week from the
 last example: C<my $Fc = 5>; # Friday>.
 
+=item C<my $Fd  = $date.first-day-of-month; # 1..7>
+=item C<my $dim = $date.date.days-in-month; # 28, 29, 30, 31>
+
 We observe that the maximum days in a month can consist of 28, 29, 30,
-or 31.  If we take the first day of the month and compare it to our
+or 31. If we take the first day of the month and compare it to our
 desired calendar week start day, we can derive the Date days in the
 first calendar week. Note lists of Date days stay in the proper order,
 so we must get one of the following sequences in a first week of one
@@ -158,8 +158,8 @@ Date dow for any combination of calendar week start day and position
 (1..7) in that week.
 We define a hash of hashes keyed by the Date dow desired to begin a
 calendar week. The values are hashes of that first week keyed with
-Date dow numbers for that week whose value are their postions in the
-seven-day array for that entire week.
+Date dow numbers for that week whose values are the number of
+days remaing in the week for each dow.
 
 =begin code
 my %calweeks = [
