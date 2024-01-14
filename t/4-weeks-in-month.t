@@ -78,4 +78,13 @@ is weeks-in-month($date), 5;
 $date  = Date.new: $year, 12, 1;
 is weeks-in-month($date), 5;
 
+# more general testing
+$year = 2024;
+$date  = Date.new: $year, 1, 1;
+
+is weeks-in-month($date), 5;
+
+my $cal-first-dow = 3; #
+is weeks-in-month($date, :$cal-first-dow), 6;
+
 done-testing;

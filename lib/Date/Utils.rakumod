@@ -1,43 +1,47 @@
 unit module Date::Utils;
 
+my %calweeks;
+
+=begin comment
+my sub days-in-week1(
+    Date $date,
+    :$cal-first-dow = 7, # Sunday
+    :$debug
+    --> UInt) {
+    my $F     = $date.first-date-in-month;
+    my $Fd    = $F.day-of-week; # 1..7 (Mon..Sun)
+    my $Fc    = $cal-first-dow;
+    my $ndays = $date.days-in-month;
+
+}
+=end comment
+
 multi sub weeks-in-month(
-    :$year!, :$month!, 
+    :$year!, :$month!,
+    :$cal-first-dow = 7, # Sunday
     :$debug
     --> UInt) is export {
     my $date = Date.new: :$year, :$month;
-    weeks-in-month $date, :$debug
+    weeks-in-month $date, :$cal-first-dow, :$debug
 }
 
 multi sub weeks-in-month(
     Date $date,
+    :$cal-first-dow = 7, # Sunday
     :$debug
     --> UInt) is export {
 
-    # get days in first week
-    # transform this:
-    # 7 1 2 3 4 5 6 => $dow 
-    # to this
-    # 1 2 3 4 5 6 7
-    # 7 - 6 = 1
-    # 1 + 1 = 2
-    # 2
-    # 3
-    # 4
-    # 5
-    # 6 + 1 = 7
+    my $Fc = $cal-first-dow; # 1..7
+    unless 0 < $Fc < 8 {
+        die "FATAL: cal-first-dow out of range 1..7, input value was: $Fc"
+    }
 
+    # get days in first week
     my $F   = $date.first-date-in-month;
     my $dim = $date.days-in-month;
-
     my $Fd  = $F.day-of-week; # 1..7 (Mon..Sun)
-    if $Fd > 6 {
-        $Fd = 1;
-    }
-    else {
-        ++$Fd;
-    }
 
-    my $days-in-week1  = 8 - $Fd;
+    my $days-in-week1 = %calweeks{$Fc}{$Fd};
     my $days-remain    = $dim - $days-in-week1;
     my $weeks-in-month = 1; # the first full or partial week
 
@@ -46,41 +50,51 @@ multi sub weeks-in-month(
     ++$weeks-in-month if ($days-remain mod 7).so;
     $weeks-in-month
 
-    # visualize the situation
-    # 7 1 2 3 4 5 6    7
-    # 7 1 2 3 4 5 6   14
-    # 7 1 2 3 4 5 6   21
-    # 7 1 2 3 4 5 6   28
-    # 7 1 2 3 4 5 6   35
-    # 7 1 2 3 4 5 6   42
+    # Visualize the situation
+    # Monday starts the month
+    # 1 2 3 4 5 6 7    7
+    # 1 2 3 4 5 6 7   14
+    # 1 2 3 4 5 6 7   21
+    # 1 2 3 4 5 6 7   28
+    # 1 2 3 4 5 6 7   35
+    # 1 2 3 4 5 6 7   42
+
+    # Sunday starts the month
+    #             7    1
+    # 1 2 3 4 5 6 7    8
+    # 1 2 3 4 5 6 7   15
+    # 1 2 3 4 5 6 7   22
+    # 1 2 3 4 5 6 7   29
+    # 1 2 3 4 5 6 7   36
+    # 1 2 3 4 5 6 7   43
 
     # divide days-in-month by 7:
     #   first day is on a Monday
-    #   31: 4 weeks plus 3 days (5 weeks min)
-    #   30: 4 weeks plus 2 days (5 weeks min) 
-    #   29: 4 weeks plus 1 day  (5 weeks min) 
-    #   28: 4 weeks exactly     (4 weeks min) 
+    #   31: 4 weeks plus 3 days (5 weeks max)
+    #   30: 4 weeks plus 2 days (5 weeks max)
+    #   29: 4 weeks plus 1 day  (5 weeks max)
+    #   28: 4 weeks exactly     (4 weeks max)
 
     #   first day is on a Sunday
     #   31: 1 day plus 4 weeks plus 2 days (6 weeks max)
-    #   30: 1 day plus 4 weeks plus 1 day  (6 weeks max) 
-    #   29: 1 day plus 4 weeks exactly     (5 weeks max) 
-    #   28: 1 day plus 3 weeks plus 6 days (5 weeks max) 
+    #   30: 1 day plus 4 weeks plus 1 day  (6 weeks max)
+    #   29: 1 day plus 4 weeks exactly     (5 weeks max)
+    #   28: 1 day plus 3 weeks plus 6 days (5 weeks max)
 }
 
 sub nth-dow-in-month(
-    :$year!, :$month!, :$nth! is copy, 
-    :$dow! where {0 < $_ <= 7}, 
+    :$year!, :$month!, :$nth! is copy,
+    :$dow! where {0 < $_ <= 7},
     :$debug
     --> Date) is export {
 
-    nth-day-of-week-in-month :$year, :$month, :$nth, 
+    nth-day-of-week-in-month :$year, :$month, :$nth,
     :day-of-week($dow), :$debug
 }
 
 sub nth-day-of-week-in-month(
-    :$year!, :$month!, :$nth! is copy, 
-    :$day-of-week! where {0 < $_ <= 7}, 
+    :$year!, :$month!, :$nth! is copy,
+    :$day-of-week! where {0 < $_ <= 7},
     :$debug
     --> Date) is export {
 
@@ -117,18 +131,18 @@ sub nth-day-of-week-in-month(
 }
 
 sub nth-dow-after-date(
-    Date :$date!, :$nth! is copy, 
-    :$dow! where {0 < $_ <= 7}, 
+    Date :$date!, :$nth! is copy,
+    :$dow! where {0 < $_ <= 7},
     :$debug
     --> Date) is export {
 
-    nth-day-of-week-after-date :$date, :$nth, 
+    nth-day-of-week-after-date :$date, :$nth,
     :day-of-week($dow), :$debug
 }
 
 sub nth-day-of-week-after-date(
-    Date :$date!, :$nth! is copy, 
-    :$day-of-week! where {0 < $_ <= 7}, 
+    Date :$date!, :$nth! is copy,
+    :$day-of-week! where {0 < $_ <= 7},
     :$debug
     --> Date) is export {
 
@@ -159,3 +173,41 @@ sub nth-day-of-week-after-date(
     }
     $dd
 }
+
+%calweeks = [
+    1 => {
+        # keys are Date dow's for this week
+        # values are the number of days remaining in the week
+        1 => 7, 2 => 6, 3 => 5, 4 => 4, 5 => 3, 6 => 2, 7 => 1,
+    },
+
+    2 => {
+        # keys are Date dow's for this week
+        2 => 7, 3 => 6, 4 => 5, 5 => 4, 6 => 3, 7 => 2, 1 => 1,
+    },
+
+    3 => {
+        # keys are Date dow's for this week
+        3 => 7, 4 => 6, 5 => 5, 6 => 4, 7 => 3, 1 => 2, 2 => 1,
+    },
+
+    4 => {
+        # keys are Date dow's for this week
+        4 => 7, 5 => 6, 6 => 5, 7 => 4, 1 => 3, 2 => 2, 3 => 1,
+    },
+
+    5 => {
+        # keys are Date dow's for this week
+        5 => 7, 6 => 6, 7 => 5, 1 => 4, 2 => 3, 3 => 2, 4 => 1,
+    },
+
+    6 => {
+        # keys are Date dow's for this week
+        6 => 7, 7 => 6, 1 => 5, 2 => 4, 3 => 3, 4 => 2, 5 => 1,
+    },
+
+    7 => {
+        # keys are Date dow's for this week
+        7 => 7, 1 => 6, 2 => 5, 3 => 4, 4 => 3, 5 => 2, 6 => 1,
+    },
+];
