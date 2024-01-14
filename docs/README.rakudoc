@@ -155,15 +155,18 @@ partial first week).
 We now construct a constant data object that enables us to address the
 Date dow for any combination of calendar week start day and position
 (1..7) in that week.  We define a hash of hashes keyed by the 
-Date dow desired to begin a calendar week. The values are hashes of
-that week keyed with Date dow numbers for that week. Each key's value 
-is the number of days remaining in the week for that dow.
+Date dow desired to begin a calendar week. For each of those keys, 
+the values are hashes of that week's seven Date dow numbers. Each key's value 
+is the number of days remaining in the week for that dow. The comments
+in the following code should make that a bit clearer.
 
 =begin code
 my %calweeks = [
+    # Keys are the dow of the starting day for a calendar week in Raku Date dow
+    # default order. The keys' values are another hash.
     1 => {
-        # Keys are Date dow's for this week. Values are the number 
-        # of days remaining in the week for each dow.
+        # Keys of the second-level hash are Date dow's for this week. 
+        # Values are the number of days remaining in the week for each dow.
         1 => 7, 2 => 6, 3 => 5, 4 => 4, 5 => 3, 6 => 2, 7 => 1,
     },
     2 => {
