@@ -1,6 +1,8 @@
 Revision history for Date-Utils
 
 {{$NEXT}}
+
+0.5.3  2024-01-14T05:59:25-06:00
     - Correct Windows workflow test
 
 0.5.2  2024-01-14T05:51:59-06:00
