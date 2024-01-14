@@ -137,16 +137,23 @@ S M T W T F S    Su Mo Tu We Th Fr Sa
 So, how can we turn those observations into an algorithm? Raku's
 C<Dateish> routines provide us with two known values of the month:
 
-=item C<my $Fd  = $date.first-day-of-month; # 1..7>
-=item C<my $dim = $date.days-in-month; # 28, 29, 30, 31>
+=item C<my $Fd  = $date.first-day-of-month>; # range: 1..7
+
+Given that value, and knowing the dows retain their order,
+we should be able to calculate the number of days in
+any first week.
+
+If we take the first day of the month and compare it to our
+desired calendar week start day, we can derive the Date days in the
+first calendar week. 
+
+=item C<my $dim = $date.days-in-month;>      # range: 28..31
 
 We choose our example calendar week start day of the week from the
 last example: C<my $Fc = 5> (a Friday).
 
-We observe that the maximum days in a month can consist of 28, 29, 30,
-or 31. If we take the first day of the month and compare it to our
-desired calendar week start day, we can derive the Date days in the
-first calendar week. Note lists of Date days stay in the proper order,
+
+Lists of Date days stay in the proper order,
 so we must get one of the following sequences in a first week of one
 to seven days. Note also each sequence is defined by its first day number,
 but it does B<not> have to have its full set of days (as occurs in a
