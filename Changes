@@ -1,6 +1,11 @@
 Revision history for Date-Utils
 
 {{$NEXT}}
+    - Correct errors in the README
+      + note correct number of
+        calendar weeks in the second
+        example is six (not five)
+    - Update copyright year
 
 0.5.1  2024-01-13T18:57:55-06:00
     - Correct error in the README

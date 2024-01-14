@@ -77,7 +77,7 @@ Notes
 
 
 
-This version adds a more general routine to calculate the *weeks-in-month* for any starting day of the week (dow) given its number (Monday through Sunday) as a Raku Date dow in the range 1..7.
+This version adds a more general routine to calculate the *weeks-in-month* for any starting day of the week (dow) given its number (Monday through Sunday) as a Raku Date dow in the range 1..7. The routine is important for laying out a calendar because it determines the vertical space required for the presentation.
 
 Given a calendar week starting on Monday, the Raku Date dow values for a month are shown below along with the corresponding calendar values for a 31-day month starting on a Friday. Note there are five calendar weeks consisting of one partial week followed by four full weeks.
 
@@ -89,7 +89,7 @@ Given a calendar week starting on Monday, the Raku Date dow values for a month a
     1 2 3 4 5 6 7    18 19 20 21 22 23 24
     1 2 3 4 5 6 7    25 26 27 28 29 30 31
 
-If the calendar week starts on a Sunday, the Date dow numbers and the calendar days for the same month change to the form shown below. Note there are still five calendar weeks, but now consisting of one partial week followed by four full weeks followed by one partial week.
+Changing the start day can have significant effects. If the calendar week starts on a Sunday, the Date dow numbers and the calendar days for the same month change to the form shown below. Note there are now **six** calendar weeks, consisting of one partial week followed by four full weeks followed by one partial week.
 
     Code             Days
     S M T W T F S    Su Mo Tu We Th Fr Sa
@@ -150,7 +150,7 @@ Tom Browder <tbrowder@acm.org>
 COPYRIGHT AND LICENSE
 =====================
 
-© 2023 Tom Browder
+© 2024 Tom Browder
 
 This library is free software; you may redistribute it or modify it under the Artistic License 2.0.
 
