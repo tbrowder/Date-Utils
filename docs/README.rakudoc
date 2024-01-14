@@ -141,7 +141,7 @@ C<Dateish> routines provide us with two known values of the month:
 =item C<my $dim = $date.days-in-month; # 28, 29, 30, 31>
 
 We choose our example calendar week start day of the week from the
-last example: C<my $Fc = 5>; # Friday>.
+last example: C<my $Fc = 5> (a Friday).
 
 We observe that the maximum days in a month can consist of 28, 29, 30,
 or 31. If we take the first day of the month and compare it to our
