@@ -1,6 +1,8 @@
 use Test;
 use Date::Utils;
 
+plan 28;
+
 my ($year, $month, Date $date);
 
 $year  = 2023;
@@ -87,4 +89,13 @@ is weeks-in-month($date), 5;
 my $cal-first-dow = 3; #
 is weeks-in-month($date, :$cal-first-dow), 6;
 
-done-testing;
+# Test invalid dow inputs
+$cal-first-dow = 8;
+dies-ok {
+    weeks-in-month($date, :$cal-first-dow);
+}, "Invalid cal-first-dow $cal-first-dow";
+
+$cal-first-dow = 0;
+dies-ok {
+    weeks-in-month($date, :$cal-first-dow);
+}, "Invalid cal-first-dow $cal-first-dow";

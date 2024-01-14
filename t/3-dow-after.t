@@ -1,6 +1,8 @@
 use Test;
 use Date::Utils;
 
+plan 8;
+
 my ($year, Date $date, $nth, $dow, Date $d);
 
 $year  = 2023;
@@ -27,6 +29,15 @@ is $d, Date.new: $year, 2, 24;
 $d = nth-dow-after-date :$date, :$nth, :$dow;
 is $d, Date.new: $year, 2, 24;
 
+# Test invalid dows
 
+$dow = 8; 
+dies-ok {
+    $d = nth-dow-after-date :$date, :$nth, :$dow;
+}, "Invalid dow $dow";
 
-done-testing;
+$dow = 0; 
+dies-ok {
+    $d = nth-dow-after-date :$date, :$nth, :$dow;
+}, "Invalid dow $dow";
+

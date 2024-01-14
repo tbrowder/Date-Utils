@@ -1,6 +1,8 @@
 use Test;
 use Date::Utils;
 
+plan 8;
+
 my ($year, $month, $nth, $dow, Date $d);
 
 $year  = 2023;
@@ -25,4 +27,13 @@ is $d, Date.new: $year, $month, 27;
 $d = nth-dow-in-month :$year, :$month, :$nth, :$dow;
 is $d, Date.new: $year, $month, 27;
 
-done-testing;
+# Test invalid dow inputs
+$dow = 8;
+dies-ok {
+    $d = nth-day-of-week-in-month :$year, :$month, :$nth, :day-of-week($dow);
+}, "Invalid dow $dow";
+
+dies-ok {
+    $d = nth-day-of-week-in-month :$year, :$month, :$nth, :day-of-week($dow);
+}, "Invalid dow $dow";
+

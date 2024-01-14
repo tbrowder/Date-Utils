@@ -29,15 +29,16 @@ to start calendar weeks on Sunday and end on Saturday as normally used
 in US calendars. See the discussion of the methodology used in B<Notes> below.
 
 =begin code
+subset DoW of Int where { 0 < $_ < 8 };
 multi sub weeks-in-month(
     :$year!, :$month!,
-    :$cal-first-dow = 7, # Sunday
+    DoW :$cal-first-dow = 7, # Sunday
     :$debug
     --> UInt) {...}
 
 multi sub weeks-in-month(
     Date $date,
-    :$cal-first-dow = 7, # Sunday
+    DoW :$cal-first-dow = 7, # Sunday
     :$debug
     --> UInt) {...}
 =end code
@@ -49,7 +50,7 @@ C<nth-day-of-week-in-month>
 =begin code
 sub nth-day-of-week-in-month(
     :$year!, :$month!, :$nth! is copy,
-    :$day-of-week! where {0 < $_ <= 7},
+    DoW :$day-of-week!},
     :$debug
     --> Date) {...}
 =end code
@@ -64,7 +65,7 @@ strokes is provided:
 =begin code
 sub nth-dow-in-month(
     :$year!, :$month!, :$nth! is copy,
-    :$dow! where {0 < $_ <= 7},
+    DoW :$dow!,
     :$debug
     --> Date) {...}
 =end code
@@ -76,7 +77,7 @@ C<nth-day-of-week-after-date>
 =begin code
 sub nth-day-of-week-after-date(
     Date :$date!, :$nth! is copy,
-    :$day-of-week! where {0 < $_ <= 7},
+    DoW :$day-of-week!,
     :$debug
     --> Date) {...}
 =end code
@@ -87,7 +88,7 @@ strokes is provided:
 =begin code
 sub nth-dow-after-date(
     Date :$date!, :$nth! is copy,
-    :$dow! where {0 < $_ <= 7},
+    DoW :$dow!,
     :$debug
     --> Date) {...}
 =end code
@@ -194,7 +195,7 @@ remaining in that week.
 
 Given that value, subtract it from C<$dim> to get the number
 of days left in the month. Those remaining days divided by seven
-(rounded up) yield the remaining weeks so we have our desired number.
+(and rounded up) yield the remaining weeks so we have our desired number.
 
 =head1 AUTHOR
 

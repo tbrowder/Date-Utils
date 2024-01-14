@@ -2,23 +2,11 @@ unit module Date::Utils;
 
 my %calweeks;
 
-=begin comment
-my sub days-in-week1(
-    Date $date,
-    :$cal-first-dow = 7, # Sunday
-    :$debug
-    --> UInt) {
-    my $F     = $date.first-date-in-month;
-    my $Fd    = $F.day-of-week; # 1..7 (Mon..Sun)
-    my $Fc    = $cal-first-dow;
-    my $ndays = $date.days-in-month;
-
-}
-=end comment
+subset DoW of Int where { 0 < $_ < 8 };
 
 multi sub weeks-in-month(
     :$year!, :$month!,
-    :$cal-first-dow = 7, # Sunday
+    DoW :$cal-first-dow = 7, # Sunday
     :$debug
     --> UInt) is export {
     my $date = Date.new: :$year, :$month;
@@ -27,14 +15,11 @@ multi sub weeks-in-month(
 
 multi sub weeks-in-month(
     Date $date,
-    :$cal-first-dow = 7, # Sunday
+    DoW :$cal-first-dow = 7, # Sunday
     :$debug
     --> UInt) is export {
 
     my $Fc = $cal-first-dow; # 1..7
-    unless 0 < $Fc < 8 {
-        die "FATAL: cal-first-dow out of range 1..7, input value was: $Fc"
-    }
 
     # get days in first week
     my $F   = $date.first-date-in-month;
@@ -84,17 +69,17 @@ multi sub weeks-in-month(
 
 sub nth-dow-in-month(
     :$year!, :$month!, :$nth! is copy,
-    :$dow! where {0 < $_ <= 7},
+    DoW :$dow!,
     :$debug
     --> Date) is export {
 
     nth-day-of-week-in-month :$year, :$month, :$nth,
-    :day-of-week($dow), :$debug
+        :day-of-week($dow), :$debug
 }
 
 sub nth-day-of-week-in-month(
     :$year!, :$month!, :$nth! is copy,
-    :$day-of-week! where {0 < $_ <= 7},
+    DoW :$day-of-week!,
     :$debug
     --> Date) is export {
 
@@ -132,17 +117,17 @@ sub nth-day-of-week-in-month(
 
 sub nth-dow-after-date(
     Date :$date!, :$nth! is copy,
-    :$dow! where {0 < $_ <= 7},
+    DoW :$dow!,
     :$debug
     --> Date) is export {
 
     nth-day-of-week-after-date :$date, :$nth,
-    :day-of-week($dow), :$debug
+        :day-of-week($dow), :$debug
 }
 
 sub nth-day-of-week-after-date(
     Date :$date!, :$nth! is copy,
-    :$day-of-week! where {0 < $_ <= 7},
+    DoW :$day-of-week!,
     :$debug
     --> Date) is export {
 
@@ -150,10 +135,10 @@ sub nth-day-of-week-after-date(
         $nth = 10;
     }
 
-    # get the first dow after the start date
+    # Get the first dow after the start date
     my Date $d = $date;
     my $dow = $d.day-of-week;
-    # find first instance after the start date
+    # Find first instance after the start date
     # BUT do not count the start date
     $d += 1;
     $dow = $d.day-of-week;

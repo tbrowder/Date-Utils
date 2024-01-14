@@ -24,15 +24,16 @@ Current routines provided:
 
     These two multi-subs return the total number of full and partial seven-day weeks in a calendar month where the day-of-week (dow) order begins with any desired day and ends the week six days later. The default is to start calendar weeks on Sunday and end on Saturday as normally used in US calendars. See the discussion of the methodology used in **Notes** below.
 
+        subset DoW of Int where { 0 < $_ < 8 };
         multi sub weeks-in-month(
             :$year!, :$month!,
-            :$cal-first-dow = 7, # Sunday
+            DoW :$cal-first-dow = 7, # Sunday
             :$debug
             --> UInt) {...}
 
         multi sub weeks-in-month(
             Date $date,
-            :$cal-first-dow = 7, # Sunday
+            DoW :$cal-first-dow = 7, # Sunday
             :$debug
             --> UInt) {...}
 
@@ -40,7 +41,7 @@ Current routines provided:
 
         sub nth-day-of-week-in-month(
             :$year!, :$month!, :$nth! is copy,
-            :$day-of-week! where {0 < $_ <= 7},
+            DoW :$day-of-week!},
             :$debug
             --> Date) {...}
 
@@ -50,7 +51,7 @@ Current routines provided:
 
         sub nth-dow-in-month(
             :$year!, :$month!, :$nth! is copy,
-            :$dow! where {0 < $_ <= 7},
+            DoW :$dow!,
             :$debug
             --> Date) {...}
 
@@ -58,7 +59,7 @@ Current routines provided:
 
         sub nth-day-of-week-after-date(
             Date :$date!, :$nth! is copy,
-            :$day-of-week! where {0 < $_ <= 7},
+            DoW :$day-of-week!,
             :$debug
             --> Date) {...}
 
@@ -66,7 +67,7 @@ Current routines provided:
 
         sub nth-dow-after-date(
             Date :$date!, :$nth! is copy,
-            :$dow! where {0 < $_ <= 7},
+            DoW :$dow!,
             :$debug
             --> Date) {...}
 
@@ -138,7 +139,7 @@ We now construct a constant data object that enables us to address the Date dow 
 
 For example, given a calendar week that starts on Sunday (Date dow 7) and the first day of the month is a Date dow of 2 (Tuesday), we can find the existing position (`$Fc=7` and `$dow=2`). Using the hash we get the value of `%calweeks{$Fc}{$dow}=5` which are the days remaining in that week.
 
-Given that value, subtract it from `$dim` to get the number of days left in the month. Those remaining days divided by seven (rounded up) yield the remaining weeks so we have our desired number.
+Given that value, subtract it from `$dim` to get the number of days left in the month. Those remaining days divided by seven (and rounded up) yield the remaining weeks so we have our desired number.
 
 AUTHOR
 ======
