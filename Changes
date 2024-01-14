@@ -1,6 +1,8 @@
 Revision history for Date-Utils
 
 {{$NEXT}}
+
+0.5.2  2024-01-14T05:51:59-06:00
     - Correct errors in the README
       + note correct number of
         calendar weeks in the second
