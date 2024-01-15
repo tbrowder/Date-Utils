@@ -99,7 +99,7 @@ sub nth-dow-after-date(
 This version adds a more general routine to calculate the
 I<weeks-in-month> for any starting day of the week (dow) given its
 number (Monday through Sunday) as a Raku Date dow in the range 1..7
-(the default dow order for a Raku Date)..
+(the default dow order for a Raku Date).
 The routine is important for laying out a calendar because it
 determines the vertical space required for the presentation.
 
@@ -118,7 +118,7 @@ M T W T F S S    Mo Tu We Th Fr Sa Su
 1 2 3 4 5 6 7    25 26 27 28 29 30 31
 =end code
 
-Changing the start day can have significant effects. If the 
+Changing the calendar week start day can have significant effects. If the 
 calendar week starts on a Sunday, the Date dow numbers and the
 calendar days for the same month change to the form shown below.  
 Note there are now B<six> calendar weeks, consisting of one partial
@@ -136,24 +136,16 @@ S M T W T F S    Su Mo Tu We Th Fr Sa
 =end code
 
 So, how can we turn those observations into an algorithm? Raku's
-C<Dateish> routines provide us with two known values of the month:
+C<Dateish> routines provide us with two known values of the month
+that will enable those calculations. They are:
 
-=item C<my $Fd  = $date.first-day-of-month>; # range: 1..7
+=item 1. C<my $Fd  = $date.first-day-of-month>; # range: 1..7
+=item 2. C<my $dim = $date.days-in-month;>      # range: 28..31
 
-Given that value, and knowing the dows retain their order,
-we should be able to calculate the number of days in
-any first week.
-
-If we take the first day of the month and compare it to our
-desired calendar week start day, we can derive the Date days in the
-first calendar week. 
-
-=item C<my $dim = $date.days-in-month;>      # range: 28..31
-
+Given the first value, C<$Fd>, and knowing the dows retain their order,
+we can derive the Date days in the first calendar week. 
 We choose our example calendar week start day of the week from the
 last example: C<my $Fc = 5> (a Friday).
-
-
 Lists of Date days stay in the proper order,
 so we must get one of the following sequences in a first week of one
 to seven days. Note also each sequence is defined by its first day number,
@@ -202,12 +194,13 @@ my %calweeks = [
 For example, given a calendar week that starts on Sunday (Date dow 7)
 and the first day of the month is a Date dow of 2 (Tuesday), we can
 find the existing position (C<$Fc=7> and C<$dow=2>).  Using the hash
-we get the value of C<%calweeks{$Fc}{$dow}=5> which are the days
-remaining in that week.
+we get the value of C<%calweeks{$Fc}{$dow}=5> which is the number of days
+remaining in that first week.
 
-Given that value, subtract it from C<$dim> to get the number
-of days left in the month. Those remaining days divided by seven
-(and rounded up) yield the remaining weeks so we have our desired number.
+Then subtract that number from the total number of days in the month, 
+C<$dim>, to get the number of days left in the monkth. Those 
+remaining days divided by seven (and rounded up) yield the remaining 
+weeks so we have our desired number as the sum of the two.
 
 =head1 AUTHOR
 
