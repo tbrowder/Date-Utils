@@ -22,8 +22,8 @@ multi sub weeks-in-month(
     # Define the first dow for a calendar week
     my $Fc = $cal-first-dow; # 1..7
 
-    # Get the first Date in the month
-    my $F   = $date.first-date-in-month;
+    # Get the first Date dow in the month
+    #my $F   = $date.first-date-in-month;
     # Get its dow
     my $Fd  = $date.first-date-in-month.day-of-week;
     # Get the total number of days in the month
