@@ -120,8 +120,8 @@ M T W T F S S    Mo Tu We Th Fr Sa Su
 
 Changing the calendar week start day can have significant effects. If the 
 calendar week starts on a Sunday, the Date dow numbers and the
-calendar days for the same month change to the form shown below.  
-Note there are now B<six> calendar weeks, consisting of one partial
+calendar days for the B<same month> change to the form shown below.  
+Note there are now B<six> calendar weeks consisting of one partial
 week followed by four full weeks followed by one partial week.
 
 =begin code
@@ -139,13 +139,13 @@ So, how can we turn those observations into an algorithm? Raku's
 C<Dateish> routines provide us with two known values of the month
 that will enable those calculations. They are:
 
-=item 1. C<my $Fd  = $date.first-day-of-month>; # range: 1..7
-=item 2. C<my $dim = $date.days-in-month;>      # range: 28..31
+=item Date.first-day-of-month # range: 1..7
+=item Date.days-in-month      # range: 28..31
 
-Given the first value, C<$Fd>, and knowing the dows retain their order,
+Given the first value, and knowing the dows retain their order,
 we can derive the Date days in the first calendar week. 
-We choose our example calendar week start day of the week from the
-last example: C<my $Fc = 5> (a Friday).
+We choose our example calendar week start day from the
+last example: C<my $Csd = 5> (a Friday).
 Lists of Date days stay in the proper order,
 so we must get one of the following sequences in a first week of one
 to seven days. Note also each sequence is defined by its first day number,
@@ -193,12 +193,12 @@ my %calweeks = [
 
 For example, given a calendar week that starts on Sunday (Date dow 7)
 and the first day of the month is a Date dow of 2 (Tuesday), we can
-find the existing position (C<$Fc=7> and C<$dow=2>).  Using the hash
-we get the value of C<%calweeks{$Fc}{$dow}=5> which is the number of days
+find the existing position (C<$Csd=7> and C<$dow=2>).  Using the hash
+we get the value of C<%calweeks{$Csd}{$dow}=5> which is the number of days
 remaining in that first week.
 
-Then subtract that number from the total number of days in the month, 
-C<$dim>, to get the number of days left in the monkth. Those 
+Then subtract that number from the C<Date.days-in-month>
+to get the number of days left in the month. Those 
 remaining days divided by seven (and rounded up) yield the remaining 
 weeks so we have our desired number as the sum of the two.
 

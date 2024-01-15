@@ -88,7 +88,7 @@ Given a calendar week starting on Monday, the Raku Date dow values for a month a
     1 2 3 4 5 6 7    18 19 20 21 22 23 24
     1 2 3 4 5 6 7    25 26 27 28 29 30 31
 
-Changing the calendar week start day can have significant effects. If the calendar week starts on a Sunday, the Date dow numbers and the calendar days for the same month change to the form shown below. Note there are now **six** calendar weeks, consisting of one partial week followed by four full weeks followed by one partial week.
+Changing the calendar week start day can have significant effects. If the calendar week starts on a Sunday, the Date dow numbers and the calendar days for the **same month** change to the form shown below. Note there are now **six** calendar weeks consisting of one partial week followed by four full weeks followed by one partial week.
 
     Code             Days
     S M T W T F S    Su Mo Tu We Th Fr Sa
@@ -101,11 +101,11 @@ Changing the calendar week start day can have significant effects. If the calend
 
 So, how can we turn those observations into an algorithm? Raku's `Dateish` routines provide us with two known values of the month that will enable those calculations. They are:
 
-  * 1. `my $Fd = $date.first-day-of-month`; # range: 1..7
+  * Date.first-day-of-month # range: 1..7
 
-  * 2. `my $dim = $date.days-in-month;` # range: 28..31
+  * Date.days-in-month # range: 28..31
 
-Given the first value, `$Fd`, and knowing the dows retain their order, we can derive the Date days in the first calendar week. We choose our example calendar week start day of the week from the last example: `my $Fc = 5` (a Friday). Lists of Date days stay in the proper order, so we must get one of the following sequences in a first week of one to seven days. Note also each sequence is defined by its first day number, but it does **not** have to have its full set of days (as occurs in a partial first week).
+Given the first value, and knowing the dows retain their order, we can derive the Date days in the first calendar week. We choose our example calendar week start day from the last example: `my $Csd = 5` (a Friday). Lists of Date days stay in the proper order, so we must get one of the following sequences in a first week of one to seven days. Note also each sequence is defined by its first day number, but it does **not** have to have its full set of days (as occurs in a partial first week).
 
 We now construct a constant data object that enables us to address the Date dow for any combination of calendar week start day and position (1..7) in that week. We define a hash of hashes keyed by the Date dow desired to begin a calendar week. For each of those keys, the values are hashes of that week's seven Date dow numbers. Each key's value is the number of days remaining in the week for that dow. The comments in the following code should make that a bit clearer.
 
@@ -138,9 +138,9 @@ We now construct a constant data object that enables us to address the Date dow 
         },
     ];
 
-For example, given a calendar week that starts on Sunday (Date dow 7) and the first day of the month is a Date dow of 2 (Tuesday), we can find the existing position (`$Fc=7` and `$dow=2`). Using the hash we get the value of `%calweeks{$Fc}{$dow}=5` which is the number of days remaining in that first week.
+For example, given a calendar week that starts on Sunday (Date dow 7) and the first day of the month is a Date dow of 2 (Tuesday), we can find the existing position (`$Csd=7` and `$dow=2`). Using the hash we get the value of `%calweeks{$Csd}{$dow}=5` which is the number of days remaining in that first week.
 
-Then subtract that number from the total number of days in the month, `$dim`, to get the number of days left in the monkth. Those remaining days divided by seven (and rounded up) yield the remaining weeks so we have our desired number as the sum of the two.
+Then subtract that number from the `Date.days-in-month` to get the number of days left in the month. Those remaining days divided by seven (and rounded up) yield the remaining weeks so we have our desired number as the sum of the two.
 
 AUTHOR
 ======
