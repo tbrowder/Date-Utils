@@ -144,8 +144,6 @@ that will enable those calculations. They are:
 
 Given the first value, and knowing the dows retain their order,
 we can derive the Date days in the first calendar week. 
-We choose our example calendar week start day from the
-last example: C<my $Csd = 5> (a Friday).
 Lists of Date days stay in the proper order,
 so we must get one of the following sequences in a first week of one
 to seven days. Note also each sequence is defined by its first day number,
@@ -192,13 +190,12 @@ my %calweeks = [
 =end code
 
 For example, given a calendar week that starts on Sunday (Date dow 7)
-and the first day of the month is a Date dow of 2 (Tuesday), we can
-find the existing position (C<$Csd=7> and C<$dow=2>).  Using the hash
-we get the value of C<%calweeks{$Csd}{$dow}=5> which is the number of days
+and the first day of the month is a Date dow of 2 (Tuesday),
+using the hash we get the value of C<%calweeks<7><2>=5> which is the number of days
 remaining in that first week.
 
-Then subtract that number from the C<Date.days-in-month>
-to get the number of days left in the month. Those 
+Subtracting that number from the C<Date.days-in-month>
+yields the number of days left in the month. Those 
 remaining days divided by seven (and rounded up) yield the remaining 
 weeks so we have our desired number as the sum of the two.
 
