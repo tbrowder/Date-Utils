@@ -23,16 +23,21 @@ multi sub weeks-in-month(
 
     # get days in first week
     my $F   = $date.first-date-in-month;
-    my $dim = $date.days-in-month;
+    #my $Fd  = $date.first-date-in-month.day-of-week;
     my $Fd  = $F.day-of-week; # 1..7 (Mon..Sun)
+    my $Dim = $date.days-in-month;
 
-    my $days-in-week1 = %calweeks{$Fc}{$Fd};
-    my $days-remain    = $dim - $days-in-week1;
+    #my ($d1, $dr);
+    #my $days-in-week1  = $d1 = %calweeks{$Fc}{$Fd};
+    #my $days-remain    = $dr = $Dim - $days-in-week1;
+    my $days-in-week1  = %calweeks{$Fc}{$Fd};
+    my $days-remain    = $Dim - $days-in-week1;
     my $weeks-in-month = 1; # the first full or partial week
 
     # account for remaining days
-    $weeks-in-month += ($days-remain div 7);
-    ++$weeks-in-month if ($days-remain mod 7).so;
+    $weeks-in-month += $days-remain div 7;
+    ++$weeks-in-month if $days-remain % 7 > 0;
+
     $weeks-in-month
 
     # Visualize the situation
