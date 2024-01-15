@@ -19,23 +19,29 @@ multi sub weeks-in-month(
     :$debug
     --> UInt) is export {
 
+    # Define the first dow for a calendar week
     my $Fc = $cal-first-dow; # 1..7
 
-    # get days in first week
+    # Get the first Date in the month
     my $F   = $date.first-date-in-month;
+    # Get its dow
     my $Fd  = $date.first-date-in-month.day-of-week;
-    #my $Fd  = $F.day-of-week; # 1..7 (Mon..Sun)
+    # Get the total number of days in the month
     my $Dim = $date.days-in-month;
 
-    #my ($d1, $dr);
-    #my $days-in-week1  = $d1 = %calweeks{$Fc}{$Fd};
-    #my $days-remain    = $dr = $Dim - $days-in-week1;
-    my $days-in-week1  = %calweeks{$Fc}{$Fd};
-    my $days-remain    = $Dim - $days-in-week1;
-    my $weeks-in-month = 1; # the first full or partial week
+    my ($days-in-week1, $d1, $days-remain, $dr, $weeks-in-month);
+    #$days-in-week1  = $d1 = %calweeks{$Fc}{$Fd};
+    #$days-remain    = $dr = $Dim - $days-in-week1;
 
-    # account for remaining days
+    $days-in-week1  = %calweeks{$Fc}{$Fd};
+    $days-remain    = $Dim - $days-in-week1;
+
+    # We now know all about the first week in this month
+    $weeks-in-month = 1; # the first full or partial week
+
+    # Calculate the number of weeks remaining in the month
     $weeks-in-month += $days-remain div 7;
+    # Any left over days are a partial week which also counts as a week
     ++$weeks-in-month if $days-remain % 7 > 0;
 
     $weeks-in-month
