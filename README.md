@@ -101,9 +101,9 @@ Changing the calendar week start day can have significant effects. If the calend
 
 So, how can we turn those observations into an algorithm? Raku's `Dateish` routines provide us with two known values of the month that will enable those calculations. They are:
 
-  * <Date.first-day-of-month # range: 1..7>
+  * `Date.first-day-of-month # range: 1..7`
 
-  * <Date.days-in-month # range: 28..31>
+  * `Date.days-in-month # range: 28..31`
 
 Given the first value, and knowing the dows retain their order, we can derive the Date days in the first calendar week. Lists of Date days stay in the proper order, so we must get one of the following sequences in a first week of one to seven days. Note also each sequence is defined by its first day number, but it does **not** have to have its full set of days (as occurs in a partial first week).
 

@@ -139,8 +139,8 @@ So, how can we turn those observations into an algorithm? Raku's
 C<Dateish> routines provide us with two known values of the month
 that will enable those calculations. They are:
 
-=item <Date.first-day-of-month # range: 1..7>
-=item <Date.days-in-month      # range: 28..31>
+=item C<Date.first-day-of-month # range: 1..7>
+=item C<Date.days-in-month      # range: 28..31>
 
 Given the first value, and knowing the dows retain their order,
 we can derive the Date days in the first calendar week. 
