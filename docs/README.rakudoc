@@ -136,13 +136,15 @@ S M T W T F S    Su Mo Tu We Th Fr Sa
 =end code
 
 So, how can we turn those observations into an algorithm? Raku's
-C<Dateish> routines provide us with two known values of the month
+C<Date> routines provide us with two known values of the month
 that will enable those calculations. They are:
 
-=item C<Date.first-day-of-month # range: 1..7>
-=item C<Date.days-in-month      # range: 28..31>
+=begin code
+A: Date.first-day-of-month # range: 1..7
+B: Date.days-in-month      # range: 28..31
+=end code
 
-Given the first value, and knowing the dows retain their order,
+Given the first value (A), and knowing the dows retain their order,
 we can derive the Date days in the first calendar week. 
 Lists of Date days stay in the proper order,
 so we must get one of the following sequences in a first week of one
@@ -194,7 +196,7 @@ and the first day of the month is a Date dow of 2 (Tuesday),
 using the hash we get the value of C<%calweeks<7><2>=5> which is the number of days
 remaining in that first week.
 
-Subtracting that number from the C<Date.days-in-month>
+Subtracting that number from the B<A> value (C<Date.days-in-month>)
 yields the number of days left in the month. Those 
 remaining days divided by seven (and rounded up) yield the remaining 
 weeks so we have our desired number as the sum of the two.
