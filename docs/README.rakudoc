@@ -140,8 +140,8 @@ C<Date> routines provide us with two known values of the month
 that will enable those calculations. They are:
 
 =begin code
-A: Date.first-day-of-month # range: 1..7
-B: Date.days-in-month      # range: 28..31
+A: Date.first-date-of-month.day-of-week # range: 1..7
+B: Date.days-in-month                   # range: 28..31
 =end code
 
 Given the first value (A), and knowing the dows retain their order,

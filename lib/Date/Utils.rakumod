@@ -23,8 +23,8 @@ multi sub weeks-in-month(
 
     # get days in first week
     my $F   = $date.first-date-in-month;
-    #my $Fd  = $date.first-date-in-month.day-of-week;
-    my $Fd  = $F.day-of-week; # 1..7 (Mon..Sun)
+    my $Fd  = $date.first-date-in-month.day-of-week;
+    #my $Fd  = $F.day-of-week; # 1..7 (Mon..Sun)
     my $Dim = $date.days-in-month;
 
     #my ($d1, $dr);
