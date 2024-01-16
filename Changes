@@ -1,8 +1,9 @@
 Revision history for Date-Utils
 
 {{$NEXT}}
-    - Define subset of Int where { 0 < $_ < 8 } and
-        apply to all args not specically using a Date type
+    - Replace hash with a new subroutine: days-in-week1
+    - Define: subset DoW of Int where { 0 < $_ < 8 }
+      + apply to all args not specically using a Date type
     - Add tests for invalid dow inputs
     - Remove redundant t/1-basic.t
     - Add planned number of tests to each test file
