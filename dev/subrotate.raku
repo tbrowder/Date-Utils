@@ -13,19 +13,42 @@ for @*ARGS {
 $a = shift @args if @args.elems;
 $b = shift @args if @args.elems;
 
-say "Inputs: $a, $b";
+say "Inputs:";
+say "  Calendar week first day: $a";
+say "  First dow in the month:  $b";
 
-
-say days-remain($a, $b);
+my $debug  = 0;
+my $remain = days-remain($a, $b);
+say "Days remaining: $remain";
 
 sub days-remain(
     DoW $week-start-dow, 
     DoW $first-dow = 1,
+    :$debug,
 ) {
     my $a = $week-start-dow - 1;
     my $b = $first-dow - 1;
     my @a = 1..7;
+    # @b has calweek dows in order for the desired first cal dow
     my @b = @a.rotate($a);
-    @b
+
+    # given the dow to look up, calculate the days remaining in
+    # the week
+    # days remaining? create a hash
+    my %rem;
+    my $rem = 8;
+    for @b -> $b {
+        --$rem;
+        %rem{$b} = $rem;
+    }
+
+    # get the position of the desired dow
+    my $pos;
+    for @b -> $p {
+        $pos = $p if $p == $first-dow;
+        last if $pos;
+    }
+    die "FATAL: \$pos is not defined" if not $pos;
+    %rem{$pos}
 }
 
