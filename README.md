@@ -87,9 +87,9 @@ Notes
 
 
 
-This version adds a more general routine to calculate the *weeks-in-month* for any starting day of the week (DoW) given its number (Monday through Sunday) as a Raku Date DoW in the range 1..7 (the default DoW order for a Raku Date). The routine is important for laying out a calendar because it determines the vertical space required for the presentation.
+New since the original release is a more general routine to calculate the *weeks-in-month* for **any** starting day of the week (DoW) given its number (Monday through Sunday) as a Raku Date DoW in the range 1..7 (the default DoW order for a Raku Date). The routine is important for laying out a calendar because it determines the vertical space required for the presentation.
 
-Given a calendar week starting on Monday, the Raku Date DoW values for a month are shown below along with the corresponding calendar values for a 31-day month starting on a Friday. Note there are five calendar weeks consisting of one partial week followed by four full weeks.
+With a calendar week starting on Monday, the Raku Date DoW values for a month are shown below along with the corresponding calendar values for a 31-day month starting on a Friday. Note there are five calendar weeks consisting of one partial week followed by four full weeks.
 
     Code             Days
     M T W T F S S    Mo Tu We Th Fr Sa Su
@@ -110,16 +110,22 @@ Changing the calendar week start day can have significant effects. If the calend
     7 1 2 3 4 5 6    24 25 26 27 28 29 30
     7                31
 
-So, how can we turn those observations into an algorithm? Raku's `Date` routines provide us with two known values of the month that will enable those calculations. They are:
+Raku's `Date` routines provide us with two known values of the month that will enable the needed calculations. They are:
 
     A: Date.first-date-of-month.day-of-week # range: 1..7
     B: Date.days-in-month                   # range: 28..31
 
-Given the first value (A), and knowing the DoWs retain their order, we can derive the Date days in the first calendar week. Lists of Date days stay in the proper order, so we must get one of the following sequences in a first week of one to seven days. Note also each sequence is defined by its first day number, but it does **not** have to have its full set of days (as occurs in a partial first week).
+Given the first value (A), and knowing the DoWs retain their order, we can derive the Date days in the first calendar week. Lists of Date days stay in the proper order as shown here in code used herein:
 
-For example, given a calendar week that starts on Sunday (Date DoW 7) and the first day of the month is a Date DoW of 2 (Tuesday), using the routine `days-in-week1` value of 5 which is the number of days remaining in that first week.
+So we must get one of the above sequences in a first week of one to seven days. Note also each sequence is defined by its first day number, but it does **not** have to have its full set of days (as occurs in a partial first week).
 
-Subtracting that number from the **A** value (`Date.days-in-month`) yields the number of days left in the month. Those remaining days divided by seven (and rounded up by one for any partial week) yield the remaining weeks so we have our desired number as it plus the first week,
+For example, given a calendar week that starts on Sunday (Date DoW 7) and the first day of the month is a Date DoW of 2 (Tuesday), using the routine `days-in-week1` yields a value of 5 which is the number of days remaining in that first week.
+
+    C: days-in-week1 7, 2  # OUTPUT: 5
+
+Subtracting that number from the **A** value (`Date.days-in-month`) yields the number of days left in the month: `A - C = 26`.
+
+Those remaining days divided by seven (and rounded up by one for any partial week) yield the remaining weeks so we have our desired number as it plus the first week,
 
 AUTHOR
 ======
