@@ -136,11 +136,13 @@ For example, given a calendar week that starts on Sunday (Date DoW 7) and the fi
 
     C: days-in-week1 7, 2  # OUTPUT: 5
 
-Subtracting that number from the **A** value (`Date.days-in-month`) yields the number of days left in the month: `A - C = 26`.
+Subtracting that number from the **A** value (`Date.days-in-month`) yields the number of days left in the month: `D = A - C = 26`.
 
-Those remaining days divided by seven (and rounded up by one for any partial week) yield the remaining weeks so we have our desired number as it plus the first week,
+Those remaining days divided by seven (and rounded up by one for any partial week) yield the remaining weeks so we get the desired result:
 
-    C: days-in-week1 7, 2  # OUTPUT: 5
+    my $cal-weeks = 1;                 # from the B calculation
+    $cal-weeks   += 26 div 7;          # OUTPUT: 4
+    $cal-weeks   += 1 if 26 mod 7 > 0; # OUTPUT: 5 # total calendar weeks
 
 AUTHOR
 ======

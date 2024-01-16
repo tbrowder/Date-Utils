@@ -198,14 +198,16 @@ C: days-in-week1 7, 2  # OUTPUT: 5
 =end code
 
 Subtracting that number from the B<A> value (C<Date.days-in-month>)
-yields the number of days left in the month: C<A - C = 26>.
+yields the number of days left in the month: C<D = A - C = 26>.
 
 Those remaining days divided by seven (and rounded up by one for
 any partial week) yield the remaining 
-weeks so we have our desired number as it plus the first week,
+weeks so we get the desired result:
 
 =begin code
-C: days-in-week1 7, 2  # OUTPUT: 5
+my $cal-weeks = 1;                 # from the B calculation
+$cal-weeks   += 26 div 7;          # OUTPUT: 4
+$cal-weeks   += 1 if 26 mod 7 > 0; # OUTPUT: 5 # total calendar weeks
 =end code
 
 =head1 AUTHOR
