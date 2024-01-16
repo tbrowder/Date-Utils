@@ -115,7 +115,7 @@ if $special {
     # strip out some of the doc
     my @lines;
     my $use = 0;
-    for $pod-fil2.IO.lines -> $line {
+    LINE: for $pod-fil2.IO.lines -> $line {
         # ignore all down to the line that reads:
         # "This version adds...
         if not $use and $line ~~ /^:i \h* this \h+ version \h+ adds \h+ / {
@@ -123,6 +123,11 @@ if $special {
             @lines.push: "=begin pod";
         }
         next if not $use;
+
+        if $use and $line ~~ /^ \h* '=head1' \h+ AUTHOR / {
+            @lines.push: "=end pod";
+            last LINE;
+        }
         @lines.push: $line;
     }
 
