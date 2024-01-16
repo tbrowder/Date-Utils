@@ -27,13 +27,13 @@ is $d, Date.new: $year, $month, 27;
 $d = nth-dow-in-month :$year, :$month, :$nth, :$dow;
 is $d, Date.new: $year, $month, 27;
 
-# Test invalid dow inputs
+# Test invalid DoW inputs
 $dow = 8;
 dies-ok {
     $d = nth-day-of-week-in-month :$year, :$month, :$nth, :day-of-week($dow);
-}, "Invalid dow $dow";
+}, "Invalid DoW $dow";
 
 dies-ok {
     $d = nth-day-of-week-in-month :$year, :$month, :$nth, :day-of-week($dow);
-}, "Invalid dow $dow";
+}, "Invalid DoW $dow";
 

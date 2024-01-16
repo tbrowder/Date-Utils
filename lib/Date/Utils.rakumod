@@ -2,7 +2,40 @@ unit module Date::Utils;
 
 my %calweeks;
 
-subset DoW of Int where { 0 < $_ < 8 };
+subset DoW of Int where { 0 < $_ < 8 }
+
+sub days-in-week1(
+    DoW $cal-week-start-dow, 
+    DoW $first-dow = 1,
+    :$debug,
+    --> DoW
+) is export {
+    # create indexes into arrays
+    my $a = $cal-week-start-dow - 1;
+    my $b = $first-dow - 1;
+    my @DoW = 1..7;
+    # @calweek has calweek DoWs in order for the desired first cal DoW
+    my @calweek = @DoW.rotate($a);
+
+    # given the DoW to look up, calculate the days remaining in
+    # the week, create a hash
+    my %days-remaining;
+    my $remain = 8;
+    for @calweek -> $b {
+        --$remain;
+        %days-remaining{$b} = $remain;
+    }
+
+    # get the position of the desired DoW
+    my $position;
+    for @calweek -> $p {
+        $position = $p if $p == $first-dow;
+        last if $position;
+
+    }
+    die "FATAL: \$position is not defined" if not $position;
+    %days-remaining{$position}
+}
 
 multi sub weeks-in-month(
     :$year!, :$month!,
@@ -19,21 +52,20 @@ multi sub weeks-in-month(
     :$debug
     --> UInt) is export {
 
-    # Define the first dow for a calendar week
+    # Define the first DoW for a calendar week
     my $Fc = $cal-first-dow; # 1..7
 
-    # Get the first Date dow in the month
+    # Get the first Date DoW in the month
     #my $F   = $date.first-date-in-month;
-    # Get its dow
+    # Get its DoW
     my $Fd  = $date.first-date-in-month.day-of-week;
     # Get the total number of days in the month
     my $Dim = $date.days-in-month;
 
     my ($days-in-week1, $d1, $days-remain, $dr, $weeks-in-month);
-    #$days-in-week1  = $d1 = %calweeks{$Fc}{$Fd};
-    #$days-remain    = $dr = $Dim - $days-in-week1;
+    #$days-in-week1  = %calweeks{$Fc}{$Fd};
+    $days-in-week1  = days-in-week1 $Fc, $Fd;
 
-    $days-in-week1  = %calweeks{$Fc}{$Fd};
     $days-remain    = $Dim - $days-in-week1;
 
     # We now know all about the first week in this month
@@ -99,7 +131,7 @@ sub nth-day-of-week-in-month(
     }
 
     my Date $date;
-    # get the first dow in the month
+    # get the first DoW in the month
     my Date $d = Date.new: :$year, :$month; # default is day = 1;
     my $dow = $d.day-of-week;
     # find first instance in the month
@@ -146,7 +178,7 @@ sub nth-day-of-week-after-date(
         $nth = 10;
     }
 
-    # Get the first dow after the start date
+    # Get the first DoW after the start date
     my Date $d = $date;
     my $dow = $d.day-of-week;
     # Find first instance after the start date
@@ -169,41 +201,3 @@ sub nth-day-of-week-after-date(
     }
     $dd
 }
-
-%calweeks = [
-    1 => {
-        # keys are Date dow's for this week
-        # values are the number of days remaining in the week
-        1 => 7, 2 => 6, 3 => 5, 4 => 4, 5 => 3, 6 => 2, 7 => 1,
-    },
-
-    2 => {
-        # keys are Date dow's for this week
-        2 => 7, 3 => 6, 4 => 5, 5 => 4, 6 => 3, 7 => 2, 1 => 1,
-    },
-
-    3 => {
-        # keys are Date dow's for this week
-        3 => 7, 4 => 6, 5 => 5, 6 => 4, 7 => 3, 1 => 2, 2 => 1,
-    },
-
-    4 => {
-        # keys are Date dow's for this week
-        4 => 7, 5 => 6, 6 => 5, 7 => 4, 1 => 3, 2 => 2, 3 => 1,
-    },
-
-    5 => {
-        # keys are Date dow's for this week
-        5 => 7, 6 => 6, 7 => 5, 1 => 4, 2 => 3, 3 => 2, 4 => 1,
-    },
-
-    6 => {
-        # keys are Date dow's for this week
-        6 => 7, 7 => 6, 1 => 5, 2 => 4, 3 => 3, 4 => 2, 5 => 1,
-    },
-
-    7 => {
-        # keys are Date dow's for this week
-        7 => 7, 1 => 6, 2 => 5, 3 => 4, 4 => 3, 5 => 2, 6 => 1,
-    },
-];

@@ -22,9 +22,20 @@ Current routines provided:
 
   * `weeks-in-month`
 
-    These two multi-subs return the total number of full and partial seven-day weeks in a calendar month where the day-of-week (dow) order begins with any desired day and ends the week six days later. The default is to start calendar weeks on Sunday and end on Saturday as normally used in US calendars. See the discussion of the methodology used in **Notes** below.
+    Given the starting day-of-the-week (*DoW*) for a calendar week and the DoW of the first Date of the month, this routine returns the number of days remaining in that first calendar week. See the discussion of the methodology used in **Notes** below.
 
-        subset DoW of Int where { 0 < $_ < 8 };
+        subset DoW of Int where { 0 < $_ < 8 }
+        sub days-in-week1(
+            DoW $cal-week-start-dow = 7, # range 1..7, default is usual US practice
+            DoW $first-dow,
+            :$debug,
+            --> DoW
+        ) is export {...}
+
+  * `weeks-in-month`
+
+    These two multi-subs return the total number of full and partial seven-day weeks in a calendar month where the day-of-week (DoW) order begins with any desired day and ends the week six days later. The default is to start calendar weeks on Sunday and end on Saturday as normally used in US calendars. 
+
         multi sub weeks-in-month(
             :$year!, :$month!,
             DoW :$cal-first-dow = 7, # Sunday
@@ -76,9 +87,9 @@ Notes
 
 
 
-This version adds a more general routine to calculate the *weeks-in-month* for any starting day of the week (dow) given its number (Monday through Sunday) as a Raku Date dow in the range 1..7 (the default dow order for a Raku Date). The routine is important for laying out a calendar because it determines the vertical space required for the presentation.
+This version adds a more general routine to calculate the *weeks-in-month* for any starting day of the week (DoW) given its number (Monday through Sunday) as a Raku Date DoW in the range 1..7 (the default DoW order for a Raku Date). The routine is important for laying out a calendar because it determines the vertical space required for the presentation.
 
-Given a calendar week starting on Monday, the Raku Date dow values for a month are shown below along with the corresponding calendar values for a 31-day month starting on a Friday. Note there are five calendar weeks consisting of one partial week followed by four full weeks.
+Given a calendar week starting on Monday, the Raku Date DoW values for a month are shown below along with the corresponding calendar values for a 31-day month starting on a Friday. Note there are five calendar weeks consisting of one partial week followed by four full weeks.
 
     Code             Days
     M T W T F S S    Mo Tu We Th Fr Sa Su
@@ -88,7 +99,7 @@ Given a calendar week starting on Monday, the Raku Date dow values for a month a
     1 2 3 4 5 6 7    18 19 20 21 22 23 24
     1 2 3 4 5 6 7    25 26 27 28 29 30 31
 
-Changing the calendar week start day can have significant effects. If the calendar week starts on a Sunday, the Date dow numbers and the calendar days for the **same month** change to the form shown below. Note there are now **six** calendar weeks consisting of one partial week followed by four full weeks followed by one partial week.
+Changing the calendar week start day can have significant effects. If the calendar week starts on a Sunday, the Date DoW numbers and the calendar days for the **same month** change to the form shown below. Note there are now **six** calendar weeks consisting of one partial week followed by four full weeks followed by one partial week.
 
     Code             Days
     S M T W T F S    Su Mo Tu We Th Fr Sa
@@ -104,40 +115,11 @@ So, how can we turn those observations into an algorithm? Raku's `Date` routines
     A: Date.first-date-of-month.day-of-week # range: 1..7
     B: Date.days-in-month                   # range: 28..31
 
-Given the first value (A), and knowing the dows retain their order, we can derive the Date days in the first calendar week. Lists of Date days stay in the proper order, so we must get one of the following sequences in a first week of one to seven days. Note also each sequence is defined by its first day number, but it does **not** have to have its full set of days (as occurs in a partial first week).
+Given the first value (A), and knowing the DoWs retain their order, we can derive the Date days in the first calendar week. Lists of Date days stay in the proper order, so we must get one of the following sequences in a first week of one to seven days. Note also each sequence is defined by its first day number, but it does **not** have to have its full set of days (as occurs in a partial first week).
 
-We now construct a constant data object that enables us to address the Date dow for any combination of calendar week start day and position (1..7) in that week. We define a hash of hashes keyed by the Date dow desired to begin a calendar week. For each of those keys, the values are hashes of that week's seven Date dow numbers. Each key's value is the number of days remaining in the week for that dow. The comments in the following code should make that a bit clearer.
+We now construct a constant data object that enables us to address the Date DoW for any combination of calendar week start day and position (1..7) in that week. We define a hash of hashes keyed by the Date DoW desired to begin a calendar week. For each of those keys, the values are hashes of that week's seven Date DoW numbers. Each key's value is the number of days remaining in the week for that DoW. The comments in the following code should make that a bit clearer.
 
-    my %calweeks = [
-        # Keys are the dow of the starting day for a calendar week in 
-        # Raku Date dow default order. The keys' values are another hash.
-        1 => {
-            # Keys of the second-level hash are Date dow's for this week. 
-            # Values are the number of days remaining in the week for 
-            # each dow.
-            1 => 7, 2 => 6, 3 => 5, 4 => 4, 5 => 3, 6 => 2, 7 => 1,
-        },
-        2 => {
-            2 => 7, 3 => 6, 4 => 5, 5 => 4, 6 => 3, 7 => 2, 1 => 1,
-        },
-        3 => {
-            3 => 7, 4 => 6, 5 => 5, 6 => 4, 7 => 3, 1 => 2, 2 => 1,
-        },
-        4 => {
-            4 => 7, 5 => 6, 6 => 5, 7 => 4, 1 => 3, 2 => 2, 3 => 1,
-        },
-        5 => {
-            5 => 7, 6 => 6, 7 => 5, 1 => 4, 2 => 3, 3 => 2, 4 => 1,
-        },
-        6 => {
-            6 => 7, 7 => 6, 1 => 5, 2 => 4, 3 => 3, 4 => 2, 5 => 1,
-        },
-        7 => {
-            7 => 7, 1 => 6, 2 => 5, 3 => 4, 4 => 3, 5 => 2, 6 => 1,
-        },
-    ];
-
-For example, given a calendar week that starts on Sunday (Date dow 7) and the first day of the month is a Date dow of 2 (Tuesday), using the hash we get the value of `%calweeks<7><2>=5` which is the number of days remaining in that first week.
+For example, given a calendar week that starts on Sunday (Date DoW 7) and the first day of the month is a Date DoW of 2 (Tuesday), using the hash we get the value of `%calweeks<7><2>=5` which is the number of days remaining in that first week.
 
 Subtracting that number from the **A** value (`Date.days-in-month`) yields the number of days left in the month. Those remaining days divided by seven (and rounded up) yield the remaining weeks so we have our desired number as the sum of the two.
 

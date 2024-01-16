@@ -29,15 +29,15 @@ is $d, Date.new: $year, 2, 24;
 $d = nth-dow-after-date :$date, :$nth, :$dow;
 is $d, Date.new: $year, 2, 24;
 
-# Test invalid dows
+# Test invalid DoWs
 
 $dow = 8; 
 dies-ok {
     $d = nth-dow-after-date :$date, :$nth, :$dow;
-}, "Invalid dow $dow";
+}, "Invalid DoW $dow";
 
 $dow = 0; 
 dies-ok {
     $d = nth-dow-after-date :$date, :$nth, :$dow;
-}, "Invalid dow $dow";
+}, "Invalid DoW $dow";
 

@@ -89,7 +89,7 @@ is weeks-in-month($date), 5;
 my $cal-first-dow = 3; #
 is weeks-in-month($date, :$cal-first-dow), 6;
 
-# Test invalid dow inputs
+# Test invalid DoW inputs
 $cal-first-dow = 8;
 dies-ok {
     weeks-in-month($date, :$cal-first-dow);
