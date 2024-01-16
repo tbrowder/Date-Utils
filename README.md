@@ -22,11 +22,11 @@ Current routines provided:
 
   * `days-in-week1`
 
-    Given the starting day-of-the-week (*DoW*) for a calendar week and the DoW of the first Date of the month, this routine returns the number of days remaining in that first calendar week. See the discussion of the methodology used in **Notes** below.
+    Given the starting day-of-the-week (DoW) for a calendar week and the DoW of the first Date of the month, this routine returns the number of days remaining in that first calendar week.
 
         subset DoW of Int where { 0 < $_ < 8 }
         sub days-in-week1(
-            DoW $cal-week-start-dow = 7, # range 1..7, default is usual US practice
+            DoW $cal-week-start-dow = 7, # range 1..7, default is US practice
             DoW $first-dow,
             :$debug,
             --> DoW
@@ -34,7 +34,7 @@ Current routines provided:
 
   * `weeks-in-month`
 
-    These two multi-subs return the total number of full and partial seven-day weeks in a calendar month where the day-of-week (DoW) order begins with any desired day and ends the week six days later. The default is to start calendar weeks on Sunday and end on Saturday as normally used in US calendars. 
+    These two multi-subs return the total number of full and partial seven-day weeks in a calendar month where the day-of-week order begins with any desired day and ends the week six days later. The default is to start calendar weeks on Sunday and end on Saturday as normally used in US calendars. 
 
         multi sub weeks-in-month(
             :$year!, :$month!,
@@ -117,11 +117,9 @@ So, how can we turn those observations into an algorithm? Raku's `Date` routines
 
 Given the first value (A), and knowing the DoWs retain their order, we can derive the Date days in the first calendar week. Lists of Date days stay in the proper order, so we must get one of the following sequences in a first week of one to seven days. Note also each sequence is defined by its first day number, but it does **not** have to have its full set of days (as occurs in a partial first week).
 
-We now construct a constant data object that enables us to address the Date DoW for any combination of calendar week start day and position (1..7) in that week. We define a hash of hashes keyed by the Date DoW desired to begin a calendar week. For each of those keys, the values are hashes of that week's seven Date DoW numbers. Each key's value is the number of days remaining in the week for that DoW. The comments in the following code should make that a bit clearer.
+For example, given a calendar week that starts on Sunday (Date DoW 7) and the first day of the month is a Date DoW of 2 (Tuesday), using the routine `days-in-week1` value of 5 which is the number of days remaining in that first week.
 
-For example, given a calendar week that starts on Sunday (Date DoW 7) and the first day of the month is a Date DoW of 2 (Tuesday), using the hash we get the value of `%calweeks<7><2>=5` which is the number of days remaining in that first week.
-
-Subtracting that number from the **A** value (`Date.days-in-month`) yields the number of days left in the month. Those remaining days divided by seven (and rounded up) yield the remaining weeks so we have our desired number as the sum of the two.
+Subtracting that number from the **A** value (`Date.days-in-month`) yields the number of days left in the month. Those remaining days divided by seven (and rounded up by one for any partial week) yield the remaining weeks so we have our desired number as it plus the first week,
 
 AUTHOR
 ======
