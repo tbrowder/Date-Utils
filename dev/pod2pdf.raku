@@ -46,8 +46,13 @@ my $width  =  8.5 * 72;
 # $width = ; #  8.3 in
 
 my $pod-fil;
+my $pod-fil2;
 my $pdf-fil;
+my $special = 0;
 for @*ARGS {
+    when /^:i s / {
+        ++$special;
+    }
     when $_.IO.f {
         $pod-fil = $_;
     }
@@ -86,17 +91,43 @@ for @*ARGS {
     when /^ :i d / { ++$debug }
 }
 
-unless $pod-fil and $pod-fil.IO.r {
-    note "FATAL: Unable to access a POD file.";
-    exit
+if not $special {
+    unless $pod-fil and $pod-fil.IO.r {
+        note "FATAL: Unable to access a POD file.";
+        exit
+    }
 }
-if $pod-fil ~~ /^:i (\S+) '.' rakudoc|pod $/ {
+
+if not $special and $pod-fil ~~ /^:i (\S+) '.' rakudoc|pod $/ {
     # just use the basename
     $pdf-fil = ~$0.IO.basename ~ '.pdf';
+}
+elsif $special {
+    $pod-fil  = "tREADME.rakudoc";
+    $pod-fil2 = "../docs/README.rakudoc";
 }
 else {
     note "FATAL: Pod file suffix not '.rakudoc' or '.pod'.";
     exit
+}
+
+if $special {
+    # strip out some of the doc
+    my @lines;
+    my $use = 0;
+    for $pod-fil2.IO.lines -> $line {
+        # ignore all down to the line that reads:
+        # "This version adds...
+        if not $use and $line ~~ /^:i \h* this \h+ version \h+ adds \h+ / {
+            ++$use;
+            @lines.push: "=begin pod";
+        }
+        next if not $use;
+        @lines.push: $line;
+    }
+
+    spurt $pod-fil, @lines.join("\n");
+    $pdf-fil = "tREADME.pdf";
 }
 
 
