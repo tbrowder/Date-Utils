@@ -20,7 +20,7 @@ DESCRIPTION
 
 Current routines provided:
 
-  * `weeks-in-month`
+  * `days-in-week1`
 
     Given the starting day-of-the-week (*DoW*) for a calendar week and the DoW of the first Date of the month, this routine returns the number of days remaining in that first calendar week. See the discussion of the methodology used in **Notes** below.
 

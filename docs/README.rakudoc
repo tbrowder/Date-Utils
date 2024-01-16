@@ -20,7 +20,7 @@ C<Date> class.
 Current routines provided:
 
 =begin item
-C<weeks-in-month>
+C<days-in-week1>
 
 Given the starting day-of-the-week (I<DoW>)
 for a calendar week and the DoW
