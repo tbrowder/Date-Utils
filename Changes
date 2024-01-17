@@ -1,6 +1,8 @@
 Revision history for Date-Utils
 
 {{$NEXT}}
+
+0.6.0  2024-01-17T15:21:02-06:00
     - Add tests for the two new routines
     - Add two more routines:
       + day-index-in-week
