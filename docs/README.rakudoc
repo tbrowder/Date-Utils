@@ -183,7 +183,7 @@ for @dows -> $cal-start-day {
 7: 7 1 2 3 4 5 6
 =end code
 
-Therefoe, we must get one of the above sequences during the first week,
+Therefore, we must get one of the above sequences during the first week,
 which can range from one to seven days. 
 Also note that each sequence is defined by its first day number,
 but it doesn't necessarily include a full set of days, as seen in a
