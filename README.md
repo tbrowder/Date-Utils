@@ -20,6 +20,27 @@ DESCRIPTION
 
 Current routines provided:
 
+  * `days-of-week`
+
+    Given the day-of-week (DoW) for the start of a calendar week, return a list of the DoWs. Access the list with the `day-index-in-week`.
+
+        sub days-of-week(
+            DoW $cal-first-dow = 7, # Sunday
+            :$debug,
+            --> List # range 1..7
+        ) is export {
+
+  * `day-index-in-week`
+
+    Given the day-of-week (DoW) of any day of a week, and the starting DoW for a calendar week, this routine returns the index of that DoW in a list of the calendar's DoWs. Use the index with the list from `days-of-week`.
+
+        sub day-index-in-week(
+            DoW $dow, # range 1..7
+            DoW :$cal-first-dow = 7, # Sunday
+            :$debug,
+            --> UInt # range 0..6
+        ) is export {...}
+
   * `days-in-week1`
 
     Given the day-of-week (DoW) of the first Date of the month, and the starting DoW for a calendar week, this routine returns the number of days remaining in the month's first calendar week.

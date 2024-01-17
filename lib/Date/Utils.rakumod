@@ -1,8 +1,27 @@
 unit module Date::Utils;
 
-my %calweeks;
+subset DoW of Int is export where { 0 < $_ < 8 }
 
-subset DoW of Int where { 0 < $_ < 8 }
+sub days-of-week(
+    DoW $cal-first-dow = 7, # Sunday
+    :$debug,
+    --> List # range 1..7
+) is export {
+    my DoW @dows = 1..7;
+    @dows.rotate($cal-first-dow - 1).List;
+}
+
+sub day-index-in-week(
+    DoW $dow, # range 1..7
+    DoW :$cal-first-dow = 7, # Sunday
+    :$debug,
+    --> UInt # range 0..6
+) is export {
+    my DoW @list = days-of-week $cal-first-dow;
+    for @list.kv -> $i, $v {
+        return $i if $v == $dow 
+    }
+}
 
 sub days-in-week1(
     DoW $first-dow,

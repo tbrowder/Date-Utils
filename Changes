@@ -1,9 +1,14 @@
 Revision history for Date-Utils
 
 {{$NEXT}}
+    - Add tests for the two new routines
+    - Add two more routines:
+      + day-index-in-week
+      + days-of-week
     - Credit Anton Antonov for README editing assistance
     - Replace hash with a new subroutine: days-in-week1
     - Define: subset DoW of Int where { 0 < $_ < 8 }
+      + export it
       + apply to all args not specically using a Date type
     - Add tests for invalid DoW inputs
     - Remove redundant t/1-basic.t
