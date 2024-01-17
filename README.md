@@ -115,7 +115,7 @@ Raku's `Date` routines provide us with two known values of the month that will e
     A: Date.first-date-of-month.day-of-week # range: 1..7
     B: Date.days-in-month                   # range: 28..31
 
-Given the first value (A), and knowing the DoWs retain their order, we can derive the Date days in the first calendar week. Lists of Date days stay in the proper order as shown here in code used herein:
+Given the first value (A), and knowing the DoWs retain their order, we can derive the Date days in the first calendar week. The lists of Date DoWs stay in the proper order as shown in the following code:
 
     my @dows = 1..7;
     for @dows -> $cal-start-day {
@@ -130,7 +130,7 @@ Given the first value (A), and knowing the DoWs retain their order, we can deriv
     6: 6 7 1 2 3 4 5
     7: 7 1 2 3 4 5 6
 
-So we must get one of the above sequences in a first week of one to seven days. Note also each sequence is defined by its first day number, but it does **not** have to have its full set of days (as occurs in a partial first week).
+Therefoe, we must get one of the above sequences during the first week, which can range from one to seven days. Also note that each sequence is defined by its first day number, but it doesn't necessarily include a full set of days, as seen in a partial first week.
 
 For example, given a calendar week that starts on Sunday (Date DoW 7) and the first day of the month is a Date DoW of 2 (Tuesday), using the routine `days-in-week1` yields a value of 5 which is the number of days remaining in that first week.
 
@@ -138,7 +138,7 @@ For example, given a calendar week that starts on Sunday (Date DoW 7) and the fi
 
 Subtracting that number from the **A** value (`Date.days-in-month`) yields the number of days left in the month: `D = A - C = 26`.
 
-Those remaining days divided by seven (and rounded up by one for any partial week) yield the remaining weeks so we get the desired result:
+Dividing the remaining days by seven (and rounding up by one for any partial week) gives us the remaining weeks, leading to the desired result:
 
     $cal-weeks  =  1;                # from the B Date value
     $cal-weeks += 26 div 7;          # OUTPUT: 4 # additional full weeks

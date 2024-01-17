@@ -165,8 +165,8 @@ B: Date.days-in-month                   # range: 28..31
 
 Given the first value (A), and knowing the DoWs retain their order,
 we can derive the Date days in the first calendar week. 
-Lists of Date days stay in the proper order as shown here
-in code used herein:
+The lists of Date DoWs stay in the proper order as shown
+in the following code:
 
 =begin code
 my @dows = 1..7;
@@ -183,10 +183,11 @@ for @dows -> $cal-start-day {
 7: 7 1 2 3 4 5 6
 =end code
 
-So we must get one of the above sequences in a first week of one
-to seven days. Note also each sequence is defined by its first day number,
-but it does B<not> have to have its full set of days (as occurs in a
-partial first week).
+Therefoe, we must get one of the above sequences during the first week,
+which can range from one to seven days. 
+Also note that each sequence is defined by its first day number,
+but it doesn't necessarily include a full set of days, as seen in a
+partial first week.
 
 For example, given a calendar week that starts on Sunday (Date DoW 7)
 and the first day of the month is a Date DoW of 2 (Tuesday),
@@ -200,9 +201,9 @@ C: days-in-week1 7, 2  # OUTPUT: 5
 Subtracting that number from the B<A> value (C<Date.days-in-month>)
 yields the number of days left in the month: C<D = A - C = 26>.
 
-Those remaining days divided by seven (and rounded up by one for
-any partial week) yield the remaining 
-weeks so we get the desired result:
+Dividing the remaining days by seven (and rounding up by one for
+any partial week) gives us the remaining 
+weeks, leading to the desired result:
 
 =begin code
 $cal-weeks  =  1;                # from the B Date value
