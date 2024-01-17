@@ -5,13 +5,13 @@ my %calweeks;
 subset DoW of Int where { 0 < $_ < 8 }
 
 sub days-in-week1(
-    DoW $cal-week-start-dow, 
-    DoW $first-dow = 1,
+    DoW $first-dow,
+    DoW :$cal-first-dow = 7, # Sunday
     :$debug,
     --> DoW
 ) is export {
     # create indexes into arrays
-    my $a = $cal-week-start-dow - 1;
+    my $a = $cal-first-dow - 1;
     my $b = $first-dow - 1;
     my @DoW = 1..7;
     # @calweek has calweek DoWs in order for the desired first cal DoW
@@ -53,7 +53,7 @@ multi sub weeks-in-month(
     --> UInt) is export {
 
     # Define the first DoW for a calendar week
-    my $Fc = $cal-first-dow; # 1..7
+    #my $Fc = $cal-first-dow; # 1..7
 
     # Get the first Date DoW in the month
     #my $F   = $date.first-date-in-month;
@@ -62,10 +62,8 @@ multi sub weeks-in-month(
     # Get the total number of days in the month
     my $Dim = $date.days-in-month;
 
-    my ($days-in-week1, $d1, $days-remain, $dr, $weeks-in-month);
-    #$days-in-week1  = %calweeks{$Fc}{$Fd};
-    $days-in-week1  = days-in-week1 $Fc, $Fd;
-
+    my ($days-in-week1, $days-remain, $weeks-in-month);
+    $days-in-week1  = days-in-week1 $Fd, :$cal-first-dow;
     $days-remain    = $Dim - $days-in-week1;
 
     # We now know all about the first week in this month

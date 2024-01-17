@@ -22,12 +22,12 @@ Current routines provided:
 
   * `days-in-week1`
 
-    Given the starting day-of-the-week (DoW) for a calendar week and the DoW of the first Date of the month, this routine returns the number of days remaining in that first calendar week.
+    Given the DoW of the first Date of the month, and the starting day-of-the-week (DoW) for a calendar week, this routine returns the number of days remaining in that first calendar week.
 
         subset DoW of Int where { 0 < $_ < 8 }
         sub days-in-week1(
-            DoW $cal-week-start-dow = 7, # range 1..7, default is US practice
             DoW $first-dow,
+            DoW :$cal-first-dow = 7, # Sunday, US practice
             :$debug,
             --> DoW
         ) is export {...}
