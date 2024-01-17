@@ -87,7 +87,7 @@ Notes
 
 
 
-New since the original release is a more general routine to calculate the *weeks-in-month* for **any** starting day of the week (DoW) given its number (Monday through Sunday) as a Raku Date DoW in the range 1..7 (the default DoW order for a Raku Date). The routine is important for laying out a calendar because it determines the vertical space required for the presentation.
+A more general routine has been added since the original release to calculate the *weeks-in-month* for **any** starting day of the week (DoW) given its number (Monday through Sunday) as a Raku Date DoW in the range 1..7 (the default DoW order for a Raku Date). The routine is important for laying out a calendar because it determines the vertical space required for the presentation.
 
 With a calendar week starting on Monday, the Raku Date DoW values for a month are shown below along with the corresponding calendar values for a 31-day month starting on a Friday. Note there are five calendar weeks consisting of one partial week followed by four full weeks.
 
@@ -144,6 +144,13 @@ Dividing the remaining days by seven (and rounding up by one for any partial wee
     $cal-weeks += 26 div 7;          # OUTPUT: 4 # additional full weeks
     $cal-weeks += 1 if 26 mod 7 > 0; # OUTPUT: 5 # plus a partial week
                                                  # yields the end result
+
+CREDITS
+=======
+
+
+
+Thanks to fellow Raku user and author **Anton Antonov** (Github and #raku alias: @antononcube) and his fluency with LLMs for helping me to clean up my awkward grammar in the Notes section of this document.
 
 AUTHOR
 ======

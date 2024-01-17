@@ -115,10 +115,10 @@ sub nth-dow-after-date(
 
 =Notes
 
-New since the original release is a more general routine to calculate the
-I<weeks-in-month> for B<any> starting day of the week (DoW) given its
-number (Monday through Sunday) as a Raku Date DoW in the range 1..7
-(the default DoW order for a Raku Date).
+A more general routine has been added since the original release
+to calculate the I<weeks-in-month> for B<any> starting day of the 
+week (DoW) given its number (Monday through Sunday) as a Raku Date 
+DoW in the range 1..7 (the default DoW order for a Raku Date).
 The routine is important for laying out a calendar because it
 determines the vertical space required for the presentation.
 
@@ -211,6 +211,12 @@ $cal-weeks += 26 div 7;          # OUTPUT: 4 # additional full weeks
 $cal-weeks += 1 if 26 mod 7 > 0; # OUTPUT: 5 # plus a partial week
                                              # yields the end result
 =end code
+
+=CREDITS
+
+Thanks to fellow Raku user and author B<Anton Antonov> (Github and 
+#raku alias: @antononcube) and his fluency with LLMs for helping me 
+to clean up my awkward grammar in the Notes section of this document.
 
 =head1 AUTHOR
 
