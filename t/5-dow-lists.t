@@ -1,7 +1,7 @@
 use Test;
 use Date::Utils;
 
-plan 14;
+plan 18;
 
 my DoW @dow = 1..7;
 
@@ -30,3 +30,24 @@ for @dow -> $cal-first-dow {
         when $_ == 7 { is $i, 1 }
     }
 }
+
+# test invalid inputs
+my $cal-first-dow = 0;
+dies-ok {
+    day-index-in-week 1, :$cal-first-dow;
+}, "Invalid cal-first-dow $cal-first-dow";
+
+$cal-first-dow = 8;
+dies-ok {
+    day-index-in-week 1, :$cal-first-dow;
+}, "Invalid cal-first-dow $cal-first-dow";
+
+my $dow = 0;
+dies-ok {
+    day-index-in-week $dow, :cal-first-dow(3);
+}, "Invalid dow $dow";
+
+$dow = 8;
+dies-ok {
+    day-index-in-week $dow, :cal-first-dow(3);
+}, "Invalid dow $dow";
