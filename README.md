@@ -22,7 +22,7 @@ Current routines provided:
 
   * `days-in-week1`
 
-    Given the DoW of the first Date of the month, and the starting day-of-the-week (DoW) for a calendar week, this routine returns the number of days remaining in that first calendar week.
+    Given the day-of-week (DoW) of the first Date of the month, and the starting DoW for a calendar week, this routine returns the number of days remaining in the month's first calendar week.
 
         subset DoW of Int where { 0 < $_ < 8 }
         sub days-in-week1(
