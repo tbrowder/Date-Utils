@@ -130,7 +130,7 @@ Given the first value (A), and knowing the DoWs retain their order, we can deriv
     6: 6 7 1 2 3 4 5
     7: 7 1 2 3 4 5 6
 
-Therefoe, we must get one of the above sequences during the first week, which can range from one to seven days. Also note that each sequence is defined by its first day number, but it doesn't necessarily include a full set of days, as seen in a partial first week.
+Therefore, we must get one of the above sequences during the first week, which can range from one to seven days. Also note that each sequence is defined by its first day number, but it doesn't necessarily include a full set of days, as seen in a partial first week.
 
 For example, given a calendar week that starts on Sunday (Date DoW 7) and the first day of the month is a Date DoW of 2 (Tuesday), using the routine `days-in-week1` yields a value of 5 which is the number of days remaining in that first week.
 
