@@ -164,9 +164,9 @@ Subtracting that number from the **A** value (`Date.days-in-month`) yields the n
 
 Dividing the remaining days by seven (and rounding up by one for any partial week) gives us the remaining weeks, leading to the desired result:
 
-    $cal-weeks  =  1;                # from the B Date value
-    $cal-weeks += 26 div 7;          # OUTPUT: 4 # + additional full weeks
-    $cal-weeks += 1 if 26 mod 7 > 0; # OUTPUT: 5 # + a partial week
+    $cal-weeks  =  1;                # from the B Date value 
+    $cal-weeks += 26 div 7;          # OUTPUT: 4 # plus other full weeks
+    $cal-weeks += 1 if 26 mod 7 > 0; # OUTPUT: 5 # plus a partial week
                                                  # yields the end result
 
 CREDITS
