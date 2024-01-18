@@ -1,6 +1,8 @@
 Revision history for Date-Utils
 
 {{$NEXT}}
+    - Improve the DESCRIPTION to include more details
+      on the ISO standard on the order of days of the week 
 
 0.6.0  2024-01-17T15:21:02-06:00
     - Add tests for the two new routines

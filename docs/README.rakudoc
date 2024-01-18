@@ -15,9 +15,18 @@ use Date::Utils;
 
 B<Date::Utils> is a collection of routines to help users calculate
 certain dates in relation to other dates provided by Raku's powerful
-C<Date> class.
+C<Date> class. 
 
-Current routines provided:
+The ISO standard calendar week begins on Monday
+as day-of-the-week (DoW) one and and ends on Sunday, DoW seven,
+but the default in the subroutines herein is set for the US 
+practice of beginning the calendar week
+on Sunday.  However, that default is easily changed
+by the named parameter C<:$cal-first-dow> as seen in the signatures
+of pertinent subroutines
+listed below.
+
+=head1 Routines provided in this module
 
 =begin item
 C<days-of-week>
