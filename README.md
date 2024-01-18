@@ -18,7 +18,10 @@ DESCRIPTION
 
 **Date::Utils** is a collection of routines to help users calculate certain dates in relation to other dates provided by Raku's powerful `Date` class.
 
-Current routines provided:
+The ISO standard calendar week begins on Monday as day-of-the-week (DoW) one and ends on Sunday, DoW seven, but the default in the subroutines herein is set for the US practice of beginning the calendar week on Sunday. However, that default is easily changed by the named parameter `:$cal-first-dow` as seen in the signatures of pertinent subroutines listed below.
+
+Routines provided in this module
+================================
 
   * `days-of-week`
 
@@ -48,14 +51,14 @@ Current routines provided:
         subset DoW of Int where { 0 < $_ < 8 }
         sub days-in-week1(
             DoW $first-dow,
-            DoW :$cal-first-dow = 7, # Sunday, US practice
+            DoW :$cal-first-dow = 7, # Sunday
             :$debug,
             --> DoW
         ) is export {...}
 
   * `weeks-in-month`
 
-    These two multi-subs return the total number of full and partial seven-day weeks in a calendar month where the day-of-week order begins with any desired day and ends the week six days later. The default is to start calendar weeks on Sunday and end on Saturday as normally used in US calendars. 
+    These two multi-subs return the total number of full and partial seven-day weeks in a calendar month where the day-of-week order begins with any desired day and ends the week six days later.
 
         multi sub weeks-in-month(
             :$year!, :$month!,
@@ -108,9 +111,9 @@ Notes
 
 
 
-A more general routine has been added since the original release to calculate the *weeks-in-month* for **any** starting day of the week (DoW) given its number (Monday through Sunday) as a Raku Date DoW in the range 1..7 (the default DoW order for a Raku Date). The routine is important for laying out a calendar because it determines the vertical space required for the presentation.
+A more general routine has been added since the original release to calculate the *weeks-in-month* for **any** starting day of the week (DoW) given its number (Monday through Sunday) as a Raku Date DoW in the range 1..7 (the default ISO DoW order for a Raku Date). The routine is important for laying out a calendar because it determines the vertical space required for the presentation.
 
-With a calendar week starting on Monday, the Raku Date DoW values for a month are shown below along with the corresponding calendar values for a 31-day month starting on a Friday. Note there are five calendar weeks consisting of one partial week followed by four full weeks.
+With a calendar week starting on Monday, the ISO Date DoW values for a month are shown below along with the corresponding calendar values for a 31-day month starting on a Friday. Note there are five calendar weeks consisting of one partial week followed by four full weeks.
 
     Code             Days
     M T W T F S S    Mo Tu We Th Fr Sa Su
