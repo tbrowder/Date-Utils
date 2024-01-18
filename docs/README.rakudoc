@@ -243,7 +243,7 @@ result:
 
 =begin code
 $cal-weeks  =  1;                # from the B Date value
-$cal-weeks += 26 div 7;          # OUTPUT: 4 # additional full weeks
+$cal-weeks += 26 div 7;          # OUTPUT: 4 # plus additional full weeks
 $cal-weeks += 1 if 26 mod 7 > 0; # OUTPUT: 5 # plus a partial week
                                              # yields the end result
 =end code
