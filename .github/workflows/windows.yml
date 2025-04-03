@@ -15,14 +15,16 @@ jobs:
         os:
           - windows-latest
         raku-version:
-          - '2022.07'
+          - 'latest'
     runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: Raku/setup-raku@v1
-        with:
-          raku-version: ${{ matrix.raku-version }}
       - name: Install Dependencies
-        run: zef install --/test --test-depends --deps-only .
+        run: |
+            choco install rakudostar
+            choco install wget
+            choco install dejavufonts
+            zef --exclude="z" install --debug --/test --test-depends --deps-only .
       - name: Run Tests
-        run: zef test --debug .
+        run: zef install --debug .
