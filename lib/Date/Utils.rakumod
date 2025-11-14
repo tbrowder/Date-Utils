@@ -4,19 +4,26 @@ subset DoW of Int is export where { 0 < $_ < 8 }
 subset DoWS of Str is export 
     where * ~~ /:i monday|tuesday|wednesday|thursday|friday|saturday|sunday/;
 
+constant %dow-hash = %(
+    1 => "Monday"    ,
+    2 => "Tuesday"   ,
+    3 => "Wednesday" ,
+    4 => "Thursday"  ,
+    5 => "Friday"    ,
+    6 => "Saturday"  ,
+    7 => "Sunday"    ,
+);
+
 sub dow-name(
-    DoW $n
+    $arg where * ~~ UInt | Date
     --> DoWS
 ) is export {
-    my DoWS $dow;
-    with $n {
-        when /1/ { $dow = "Monday"    }
-        when /2/ { $dow = "Tuesday"   }
-        when /3/ { $dow = "Wednesday" }
-        when /4/ { $dow = "Thursday"  }
-        when /5/ { $dow = "Friday"    }
-        when /6/ { $dow = "Saturday"  }
-        when /7/ { $dow = "Sunday"    }
+    my Str $dow;
+    if $arg ~~ UInt {
+        $dow = %dow-hash{$arg};
+    }
+    elsif $arg ~~ Date {
+        $dow = %dow-hash{$arg.day-of-week};
     }
 }
 

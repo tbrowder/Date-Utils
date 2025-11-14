@@ -3,14 +3,14 @@
 NAME
 ====
 
-**Date::Utils** - Provides helpful date routines for calendar creation
+**Date::Utils** - Provides helpful date routines for calendar creation and other uses
 
 SYNOPSIS
 ========
 
 ```raku
 use Date::Utils;
-...# use the routines to create a calendar
+...# use the routines to create a calendar or give more date details
 ```
 
 DESCRIPTION
@@ -18,16 +18,20 @@ DESCRIPTION
 
 **Date::Utils** is a collection of routines to help users calculate certain dates in relation to other dates provided by Raku's powerful `Date` class.
 
-The ISO standard calendar week begins on Monday as day-of-the-week (DoW) one and ends on Sunday, DoW seven, but the default in the subroutines herein is set for the US practice of beginning the calendar week on Sunday. However, that default is easily changed by the named parameter `:$cal-first-dow` as seen in the signatures of pertinent subroutines listed below.
+As defined in ISO 8601, the standard calendar week begins on Monday as represented by the integer one for the `Date` method `day-of-the-week` (dow) and ends on Sunday represented by the integer seven. But the default in the subroutines herein is set for the US practice of beginning the calendar week on Sunday (dow 7). However, that default is easily changed by the named parameter `:$cal-first-dow` as seen in the signatures of pertinent subroutines listed below.
 
 Routines provided in this module
 ================================
 
   * `dow-name`
 
-    Given the day-of-week (DoW) for a Date, return its name in US English.
+    Given a Date or the ISO-defined number of the day of the week, return its name in US English. (If another language is desired use module `Date::Names`.)
 
-    (If another language is desired use module `Date::Names`.)
+        sub dow-name(
+            $arg,    #= a Date or a number in the range 1..7
+            :$debug,
+            --> Str
+        ) is export {...}
 
   * `days-of-week`
 
