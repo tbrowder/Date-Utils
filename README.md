@@ -23,6 +23,12 @@ The ISO standard calendar week begins on Monday as day-of-the-week (DoW) one and
 Routines provided in this module
 ================================
 
+  * `dow-name`
+
+    Given the day-of-week (DoW) for a Date, return its name in US English.
+
+    (If another language is desired use module `Date::Names`.)
+
   * `days-of-week`
 
     Given the day-of-week (DoW) for the start of a calendar week, return a list of the DoWs. Access the list with the `day-index-in-week`.

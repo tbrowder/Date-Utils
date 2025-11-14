@@ -1,6 +1,10 @@
 Revision history for Date-Utils
 
-{{$NEXT}}
+{$NEXT}
+    - Added new routine 'dow-name'
+    - Added a standard load test
+    - Updated README
+    - Added 'source-url' to 'dist.ini' file
 
 0.6.2  2025-04-03T17:32:55-05:00
     - Update .github/workflows/*.yml files

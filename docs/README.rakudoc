@@ -27,6 +27,14 @@ pertinent subroutines listed below.
 =head1 Routines provided in this module
 
 =begin item
+C<dow-name>
+
+Given the day-of-week (DoW) for a Date, return its name in US English.
+
+(If another language is desired use module C<Date::Names>.)
+=end item
+
+=begin item
 C<days-of-week>
 
 Given the day-of-week (DoW) for the start of a calendar week, return a
