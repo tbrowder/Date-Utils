@@ -1,6 +1,6 @@
 Revision history for Date-Utils
 
-{$NEXT}
+{{$NEXT}}
     - Added new routine 'dow-name'
     - Added a standard load test
     - Updated README
