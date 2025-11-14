@@ -1,6 +1,8 @@
 Revision history for Date-Utils
 
 {{$NEXT}}
+
+0.7.0  2025-11-14T17:32:45-06:00
     - Fix doc pod error
     - Change routine 'dow-name' to use either the numerical DoW
       or a Date object to define the desired DoW number
